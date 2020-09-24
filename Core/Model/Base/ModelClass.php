@@ -30,6 +30,7 @@ use FacturaScripts\Dinamic\Model\CodeModel;
 abstract class ModelClass extends ModelCore
 {
 
+ 
     /**
      * Returns all models that correspond to the selected filters.
      *
@@ -40,16 +41,20 @@ abstract class ModelClass extends ModelCore
      *
      * @return static[]
      */
-    public function all(array $where = [], array $order = [], int $offset = 0, int $limit = 50)
+    public function all(array $where = [], array $order = [], int $offset = 0, int $limit = 50, string $join = null, string $select = null, string $group_by = null)
     {
+        if( !$select ){
+            $select = '*';
+        }
         $modelList = [];
-        $sql = 'SELECT * FROM ' . static::tableName() . DataBaseWhere::getSQLWhere($where) . $this->getOrderBy($order);
+        $sql = "SELECT $select FROM " . static::tableName().' '.  $join .' '.DataBaseWhere::getSQLWhere($where) .' '.  $group_by .' '. $this->getOrderBy($order);
         foreach (self::$dataBase->selectLimit($sql, $limit, $offset) as $row) {
             $modelList[] = new static($row);
         }
 
         return $modelList;
     }
+
 
     /**
      * Allows to use this model as source in CodeModel special model.
@@ -96,9 +101,9 @@ abstract class ModelClass extends ModelCore
      *
      * @return int
      */
-    public function count(array $where = [])
+    public function count(array $where = [], string $join = null, string $group_by = null)
     {
-        $sql = 'SELECT COUNT(1) AS total FROM ' . static::tableName() . DataBaseWhere::getSQLWhere($where);
+        $sql = 'SELECT COUNT(1) AS total FROM ' . static::tableName() ." $join " . DataBaseWhere::getSQLWhere($where). " $group_by";
         $data = self::$dataBase->select($sql);
         return empty($data) ? 0 : (int) $data[0]['total'];
     }

@@ -185,12 +185,13 @@ class ListView extends BaseView
      * @param int             $offset
      * @param int             $limit
      */
-    public function loadData($code = '', $where = [], $order = [], $offset = -1, $limit = \FS_ITEM_LIMIT)
+    public function loadData($code = '', $where = [], $order = [], $offset = -1, $limit = \FS_ITEM_LIMIT, $join = '', $select = '', $group_by = '')
     {
+
         $this->offset = $offset < 0 ? $this->offset : $offset;
         $this->order = empty($order) ? $this->order : $order;
         $this->where = \array_merge($where, $this->where);
-        $this->count = \is_null($this->model) ? 0 : $this->model->count($this->where);
+        $this->count = \is_null($this->model) ? 0 : $this->model->count($this->where, $join, $group_by);
 
         /// avoid overflow
         if ($this->offset > $this->count) {
@@ -200,7 +201,7 @@ class ListView extends BaseView
         /// needed when megasearch force data reload
         $this->cursor = [];
         if ($this->count > 0) {
-            $this->cursor = $this->model->all($this->where, $this->order, $this->offset, $limit);
+            $this->cursor = $this->model->all($this->where, $this->order, $this->offset, $limit, $join , $select , $group_by);
             $this->loadTotalAmounts();
         }
     }

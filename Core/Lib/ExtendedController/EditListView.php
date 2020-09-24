@@ -64,7 +64,7 @@ class EditListView extends BaseView
         return true;
     }
 
-    /**
+  /**
      * Load the data in the cursor property, according to the where filter specified.
      * Adds an empty row/model at the end of the loaded data.
      *
@@ -73,17 +73,22 @@ class EditListView extends BaseView
      * @param array           $order
      * @param int             $offset
      * @param int             $limit
+     * @param string             $join
+     * @param string             $select
+     * @param string             $group_by
      */
-    public function loadData($code = '', $where = [], $order = [], $offset = -1, $limit = \FS_ITEM_LIMIT)
+    public function loadData($code = '', $where = [], $order = [], $offset = -1, $limit = \FS_ITEM_LIMIT, $join = '', $select = '', $group_by = '')
+
     {
+
         $this->offset = $offset < 0 ? $this->offset : $offset;
         $this->order = empty($order) ? $this->order : $order;
 
         $finalWhere = empty($where) ? $this->where : $where;
-        $this->count = is_null($this->model) ? 0 : $this->model->count($finalWhere);
+        $this->count = is_null($this->model) ? 0 : $this->model->count($finalWhere, $join, $group_by);
 
         if ($this->count > 0) {
-            $this->cursor = $this->model->all($finalWhere, $this->order, $this->offset, $limit);
+            $this->cursor = $this->model->all($finalWhere, $this->order, $this->offset, $limit, $join, $select, $group_by);
         }
 
         $this->where = $finalWhere;
