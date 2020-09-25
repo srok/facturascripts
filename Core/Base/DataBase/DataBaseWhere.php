@@ -36,6 +36,14 @@ class DataBaseWhere
      */
     private $dataBase;
 
+     /**
+     * Field list to apply the filters to, separated by '|'.
+     *
+     * @var string
+     */
+    private $manualWhere;
+
+
     /**
      * Field list to apply the filters to, separated by '|'.
      *
@@ -66,14 +74,27 @@ class DataBaseWhere
 
     /**
      * DataBaseWhere constructor.
-     *
+     * Opción 1: 
      * @param string $fields
      * @param mixed  $value
      * @param string $operator
      * @param string $operation
+     * * Opción 2: 
+     * @param string $where completo ( sin la palabra where )
+     
      */
-    public function __construct($fields, $value, $operator = '=', $operation = 'AND')
+    public function __construct()
     {
+        $params=func_get_args();
+        if( count($params) == 1 ){//El primer parámetro es una cadena de where completa.
+             $this->manualWhere = $params[0];
+             return;
+        }
+        $fields=$params[0];
+        $value=$params[1];
+        $operator=(isset($params[2]))?$params[2]:'=';
+        $operation=(isset($params[3]))?$params[3]:'AND';
+
         $this->dataBase = new DataBase();
         $this->fields = $fields;
         $this->operation = $operation;
@@ -168,6 +189,10 @@ class DataBaseWhere
         if ($applyOperation) {
             $result = ' ' . $this->operation . ' ' . $result;
         }
+        if( $applyOperation && $this->manualWhere ){
+            $result = ' AND ' . $result;
+
+        }
 
         return $result;
     }
@@ -246,8 +271,13 @@ class DataBaseWhere
                     break;
 
                 default:
-                    $result .= $union . $this->escapeColumn($field) . ' '
+                    if( $this->manualWhere ){
+                        $result .= $union . $this->manualWhere;
+                    }else{
+                         $result .= $union . $this->escapeColumn($field) . ' '
                         . $this->dataBase->getOperator($this->operator) . ' ' . $this->getValue($value);
+                    }
+                   
                     break;
             }
         }

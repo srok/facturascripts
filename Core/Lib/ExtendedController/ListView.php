@@ -202,7 +202,9 @@ class ListView extends BaseView
         $this->cursor = [];
         if ($this->count > 0) {
             $this->cursor = $this->model->all($this->where, $this->order, $this->offset, $limit, $join , $select , $group_by);
-            $this->loadTotalAmounts();
+            if( !$join && !$select ){ //TODO: pensar una forma de que esto se pueda implementar para los listados filtrados con JOIN
+                    $this->loadTotalAmounts();
+            }
         }
     }
 

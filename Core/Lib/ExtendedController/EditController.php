@@ -98,4 +98,44 @@ abstract class EditController extends PanelController
                 break;
         }
     }
+
+       /**
+     * Run the actions that alter data before reading it.
+     *
+     * @param string $action
+     *
+     * @return bool
+     */
+    protected function execPreviousAction($action)
+    {
+        $allowUpdate = $this->permissions->allowUpdate;
+        $codes = $this->request->request->get('code');
+        $model = $this->views[$this->active]->model;
+
+        switch ($action) {
+              case 'save-filter':
+                $this->saveFilterAction();
+                break;
+        }
+
+        return true;
+    }
+
+   
+
+        /**
+     * Saves filter values for active view and user.
+     */
+    protected function saveFilterAction()
+    {
+        $idFilter = $this->views[$this->active]->savePageFilter($this->request, $this->user);
+        if (!empty($idFilter)) {
+            $this->toolBox()->i18nLog()->notice('record-updated-correctly');
+
+            /// load filters in request
+            $this->request->request->set('loadfilter', $idFilter);
+        }
+    }
+
+
 }
