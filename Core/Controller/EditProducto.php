@@ -68,6 +68,8 @@ class EditProducto extends EditController
         $this->createViewsVariants();
         $this->createViewsStock();
         $this->createViewsSuppliers();
+        $this->createViewsLineasFacturas();
+        $this->createViewsLineasPedidos();
     }
 
     /**
@@ -82,6 +84,33 @@ class EditProducto extends EditController
         if ($almacen->count() <= 1) {
             $this->views[$viewName]->disableColumn('warehouse');
         }
+    }
+
+     /**
+     *
+     * @param string $viewName
+     */
+     protected function createViewsLineasFacturas(string $viewName = 'ListLineaFacturaProveedor')
+     {
+        $this->addListView($viewName, 'LineaFacturaProveedor', 'Historial de compras', 'fas fa-list');   
+    }
+
+     /**
+     *
+     * @param string $viewName
+     */
+     protected function createViewsLineasPedidos(string $viewName = 'ListLineaPedidoProveedor')
+     {
+        $this->addListView($viewName, 'LineaPedidoProveedor', 'Historial de pedidos', 'fas fa-list');   
+        $this->views[$viewName]->addOrderBy(['cantidad'], 'quantity');
+        $this->views[$viewName]->addOrderBy(['pvptotal'], 'amount');
+        $this->views[$viewName]->addOrderBy(['idlinea'], 'code',2);
+
+        $where = [new DataBaseWhere('tipodoc', 'PedidoProveedor')];
+        $statusValues = $this->codeModel->all('estados_documentos', 'idestado', 'nombre', true, $where);
+
+        $this->views[$viewName]->addFilterSelect('idestado', 'state', 'idestado', $statusValues);
+
     }
 
     /**
@@ -135,7 +164,7 @@ class EditProducto extends EditController
     {
         switch ($action) {
             case 'new-supplier':
-                return $this->newSupplierAction();
+            return $this->newSupplierAction();
         }
 
         return parent::execPreviousAction($action);
@@ -205,30 +234,44 @@ class EditProducto extends EditController
 
         switch ($viewName) {
             case 'EditProducto':
-                parent::loadData($viewName, $view);
-                if ($view->model->nostock) {
-                    $this->setSettings('EditStock', 'active', false);
-                } else {
-                    $this->loadCustomStockWidget('EditStock');
-                }
-                break;
+            parent::loadData($viewName, $view);
+            if ($view->model->nostock) {
+                $this->setSettings('EditStock', 'active', false);
+            } else {
+                $this->loadCustomStockWidget('EditStock');
+            }
+            break;
 
             case 'EditVariante':
-                $view->loadData('', $where, ['idvariante' => 'DESC']);
-                $this->loadCustomAttributeWidgets($viewName);
-                break;
+            $view->loadData('', $where, ['idvariante' => 'DESC']);
+            $this->loadCustomAttributeWidgets($viewName);
+            break;
 
             case 'EditStock':
-                $view->loadData('', $where, ['idstock' => 'DESC']);
-                break;
+            $view->loadData('', $where, ['idstock' => 'DESC']);
+            break;
 
             case 'ListProductoProveedor':
-                $where2 = [
-                    new DataBaseWhere('idproducto', $idproducto),
-                    new DataBaseWhere('referencia', $this->getViewModelValue('EditProducto', 'referencia'), '=', 'OR')
-                ];
-                $view->loadData('', $where2);
-                break;
+            $where2 = [
+                new DataBaseWhere('idproducto', $idproducto),
+                new DataBaseWhere('referencia', $this->getViewModelValue('EditProducto', 'referencia'), '=', 'OR')
+            ];
+            $view->loadData('', $where2);
+            break;
+            case 'ListLineaFacturaProveedor':
+            $where2 = [
+                new DataBaseWhere('idproducto', $idproducto),
+                new DataBaseWhere('referencia', $this->getViewModelValue('EditProducto', 'referencia'), '=', 'OR')
+            ];
+            $view->loadData('', $where2);
+            break;
+            case 'ListLineaPedidoProveedor':
+            $where2 = [
+                new DataBaseWhere('idproducto', $idproducto),
+                new DataBaseWhere('referencia', $this->getViewModelValue('EditProducto', 'referencia'), '=', 'OR')
+            ];
+            $view->loadData('', $where2, [], 0, \FS_ITEM_LIMIT, "INNER JOIN pedidosprov on pedidosprov.idpedido = lineaspedidosprov.idpedido",'lineaspedidosprov.*, pedidosprov.idestado as idestado');
+            break;
         }
     }
 
