@@ -25,11 +25,11 @@
         <type>character varying(4)</type>
         <null>NO</null>
     </column>
-    <column>
+   <!--  <column>
         <name>codigo</name>
-        <type>character varying(20)</type>
+        <type>character varying(50)</type>
         <null>NO</null>
-    </column>
+    </column> -->
     <column>
         <name>codpago</name>
         <type>character varying(10)</type>
