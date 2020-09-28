@@ -25,8 +25,12 @@
     {% set codimpuesto = appSettings.get('default', 'codimpuesto') %}
     {% set codretencion = appSettings.get('default', 'codretencion') %}
 
-    <br/>
-    <div class="container card">
+    <div class="bg-primary pt-5 pb-5">
+        <br/>
+        <br/>
+        <br/>
+    </div>
+    <div class="container card shadow" style="margin-top: -100px;">
         <div class="row">
             <div class="col-12">
                 <h1 class="h3 mt-3">
@@ -39,9 +43,9 @@
                 <hr/>
             </div>
         </div>
-        <form action="#" method="post" class="form">
+        <form action="#" method="post" id="formWizard" class="form">
             <input type="hidden" name="action" value="step2" />
-            <div class="row">
+            <div class="row align-items-end">
                 <div class="col-sm-4">
                     <div class="form-group">
                         {{ forms.simpleSelect('regimeniva', 'regimeniva', fsc.empresa.regimeniva, fsc.getRegimenIva(), i18n.trans('vat-regime')) }}
@@ -57,16 +61,33 @@
                         {{ forms.simpleSelect('codretencion', 'codretencion', codretencion, fsc.getSelectValues('Retencion', true), i18n.trans('default-retention')) }}
                     </div>
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        {{ i18n.trans('cost-price-policy') }}
+                        <select name="costpricepolicy" class="form-control">
+                            <option value="">------</option>
+                            <option value="last-price">{{ i18n.trans('last-purchase-price') }}</option>
+                            <option value="average-price">{{ i18n.trans('average-purchase-price') }}</option>
+                            <option value="actual-price">{{ i18n.trans('actual-cost-price') }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group form-check">
+                        <input type="checkbox" name="ventasinstock" value="1" id="cbNoStock" class="form-check-input" />
+                        <label for="cbNoStock">{{ i18n.trans('allow-sale-without-stock') }}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-sm">
                     <div class="form-group form-check">
                         <input type="checkbox" name="defaultplan" value="1" id="checkboxPlan" class="form-check-input" checked="" />
                         <label for="checkboxPlan">{{ i18n.trans('load-def-acc-plan') }}</label>
                     </div>
                 </div>
-            </div>
-            <div class="row mb-3 mt-2">
-                <div class="col text-right">
-                    <button type="submit" class="btn btn-primary">
+                <div class="col-sm text-right">
+                    <button type="submit" id="btnWizard" class="btn btn-primary">
                         {{ i18n.trans('continue') }}
                     </button>
                 </div>
@@ -77,9 +98,19 @@
 
 {% block css %}
     {{ parent() }}
-    <style>
-        body {
-            background-color: #3A414B;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('Dinamic/Assets/CSS/custom.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('node_modules/pace-js/pace.min.js') }}"></script>
+    <script src="{{ asset('Dinamic/Assets/JS/Custom.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#formWizard").submit(function () {
+                $("#btnWizard").prop('disabled', true);
+                $("#btnWizard").html('<i class="fas fa-spinner fa-spin"></i>');
+            });
+        });
+    </script>
 {% endblock %}

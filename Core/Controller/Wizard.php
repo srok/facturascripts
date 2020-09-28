@@ -38,6 +38,7 @@ class Wizard extends Controller
 {
 
     const ITEM_SELECT_LIMIT = 500;
+    const NEW_DEFAULT_PAGE = 'ListFacturaCliente';
 
     /**
      * 
@@ -426,11 +427,13 @@ class Wizard extends Controller
         $this->empresa->save();
 
         $appSettings = $this->toolBox()->appSettings();
-        foreach (['codimpuesto', 'codretencion'] as $key) {
+        foreach (['codimpuesto', 'codretencion', 'costpricepolicy'] as $key) {
             $value = $this->request->request->get($key);
             $finalValue = empty($value) ? null : $value;
             $appSettings->set('default', $key, $finalValue);
         }
+        $ventasinstock = (bool) $this->request->request->get('ventasinstock', '0');
+        $appSettings->set('default', 'ventasinstock', $ventasinstock);
         $appSettings->save();
 
         if ((bool) $this->request->request->get('defaultplan', '0')) {
@@ -474,7 +477,7 @@ class Wizard extends Controller
         }
 
         /// change user homepage
-        $this->user->homepage = $this->dataBase->tableExists('fs_users') ? 'AdminPlugins' : 'ListFacturaCliente';
+        $this->user->homepage = $this->dataBase->tableExists('fs_users') ? 'AdminPlugins' : static::NEW_DEFAULT_PAGE;
         $this->user->save();
 
         /// redirect to the home page
