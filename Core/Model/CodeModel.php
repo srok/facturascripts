@@ -83,7 +83,7 @@ class CodeModel
      *
      * @return static[]
      */
-    public static function all($tableName, $fieldCode, $fieldDescription, $addEmpty = true, $where = [])
+    public static function all($tableName, $fieldCode, $fieldDescription, $addEmpty = true, $where = [], $join = '')
     {
         $result = [];
         if ($addEmpty) {
@@ -104,7 +104,7 @@ class CodeModel
         }
 
         $sql = 'SELECT DISTINCT ' . $fieldCode . ' AS code, ' . $fieldDescription . ' AS description '
-            . 'FROM ' . $tableName . DataBaseWhere::getSQLWhere($where) . ' ORDER BY 2 ASC';
+            . 'FROM ' . $tableName .''.$join.''. DataBaseWhere::getSQLWhere($where) . ' ORDER BY 2 ASC';
         foreach (self::$dataBase->selectLimit($sql, self::ALL_LIMIT) as $row) {
             $result[] = new static($row);
         }
@@ -141,18 +141,19 @@ class CodeModel
      *
      * @return static[]
      */
-    public static function search($tableName, $fieldCode, $fieldDescription, $query, $where = [])
+    public static function search($tableName, $fieldCode, $fieldDescription, $query, $where = [], $join = '')
     {
         /// is a table or a model?
         $modelClass = self::MODEL_NAMESPACE . $tableName;
         if (\class_exists($modelClass)) {
             $model = new $modelClass();
-            return $model->codeModelSearch($query, $fieldCode, $where);
+
+            return $model->codeModelSearch($query, $fieldCode, $where, $join);
         }
 
         $fields = $fieldCode . '|' . $fieldDescription;
         $where[] = new DataBaseWhere($fields, \mb_strtolower($query, 'UTF8'), 'LIKE');
-        return self::all($tableName, $fieldCode, $fieldDescription, false, $where);
+        return self::all($tableName, $fieldCode, $fieldDescription, false, $where, $join);
     }
 
     /**

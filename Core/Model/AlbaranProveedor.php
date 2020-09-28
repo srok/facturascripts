@@ -92,4 +92,31 @@ class AlbaranProveedor extends Base\PurchaseDocument
     {
         return 'albaranesprov';
     }
+
+     /**
+     * Returns True if there is no errors on properties values.
+     *
+     * @return bool
+     */
+    public function test()
+    {
+        
+
+        if($this->idestado == 19){ //El remito aprobado requiere que se haya cargado el punto de venta y el nro
+            if(  !$this->codpv ){
+                  die('El punto de venta es obligatorio');
+                    
+                  return false;
+
+            }
+             if(  !$this->numproveedor ){
+                  die('El número de remito es obligatorio');
+
+                  return false;
+
+            }
+        }
+
+        return parent::test();
+    }
 }

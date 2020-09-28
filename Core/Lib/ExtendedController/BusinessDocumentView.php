@@ -130,7 +130,7 @@ class BusinessDocumentView extends BaseView
                 'type' => $col->widget->getType(),
                 'readOnly' => ($col->widget->readonly == 'true' || !$this->model->editable)
             ];
-
+            // mpr(  $col->widget );
             if ($item['type'] === 'autocomplete') {
                 $item['source'] = $col->widget->getDataSource();
                 $item['strict'] = false;

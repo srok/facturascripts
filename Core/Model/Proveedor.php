@@ -72,7 +72,7 @@ class Proveedor extends Base\ComercialContact
      *
      * @return CodeModel[]
      */
-    public function codeModelSearch(string $query, string $fieldcode = '', $where = [])
+    public function codeModelSearch(string $query, string $fieldcode = '', $where = [], $join = '')
     {
         $field = empty($fieldcode) ? $this->primaryColumn() : $fieldcode;
         $fields = 'cifnif|codproveedor|email|nombre|observaciones|razonsocial|telefono1|telefono2';

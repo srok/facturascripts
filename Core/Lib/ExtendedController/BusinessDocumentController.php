@@ -77,6 +77,12 @@ abstract class BusinessDocumentController extends PanelController
      */
     abstract protected function setSubject(&$view, $formData);
 
+       /**
+     * Load views and document.
+     */
+    abstract protected function createViews();
+
+
     /**
      * Starts all the objects and properties.
      *
@@ -89,28 +95,7 @@ abstract class BusinessDocumentController extends PanelController
         $this->documentTools = new BusinessDocumentFormTools();
     }
 
-    /**
-     * Load views and document.
-     */
-    protected function createViews()
-    {
-        /// tabs on top
-        $this->setTabsPosition('top');
-
-        /// document tab
-        $fullModelName = self::MODEL_NAMESPACE . $this->getModelClassName();
-        $view = new BusinessDocumentView($this->getLineXMLView(), 'new', $fullModelName);
-        $this->addCustomView($view->getViewName(), $view);
-        $this->setSettings($view->getViewName(), 'btnPrint', true);
-
-        /// edit tab
-        $viewName = 'Edit' . $this->getModelClassName();
-        $this->addEditView($viewName, $this->getModelClassName(), 'detail', 'fas fa-edit');
-
-        /// disable delete button
-        $this->setSettings($viewName, 'btnDelete', false);
-    }
-
+ 
     /**
      * Run the actions that alter data before reading it.
      *

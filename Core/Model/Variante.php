@@ -130,19 +130,20 @@ class Variante extends Base\ModelClass
      *
      * @return CodeModel[]
      */
-    public function codeModelSearch(string $query, string $fieldcode = '', $where = [])
+    public function codeModelSearch(string $query, string $fieldcode = '', $where = [], $join = '')
     {
         $results = [];
         $field = empty($fieldcode) ? $this->primaryColumn() : $fieldcode;
         $find = $this->toolBox()->utils()->noHtml(\mb_strtolower($query, 'UTF8'));
 
         $sql = "SELECT v." . $field . " AS code, p.descripcion AS description, v.idatributovalor1, v.idatributovalor2, v.idatributovalor3, v.idatributovalor4"
-            . " FROM " . static::tableName() . " v"
-            . " LEFT JOIN " . DinProducto::tableName() . " p ON v.idproducto = p.idproducto"
-            . " WHERE LOWER(v.referencia) LIKE '" . $find . "%'"
-            . " OR v.codbarras = '" . $find . "'"
-            . " OR LOWER(p.descripcion) LIKE '%" . $find . "%'"
-            . " ORDER BY v." . $field . " ASC";
+        . " FROM " . static::tableName() . " v"
+        . " LEFT JOIN " . DinProducto::tableName() . " p ON v.idproducto = p.idproducto "
+        . $join 
+        . " WHERE LOWER(v.referencia) LIKE '" . $find . "%'"
+        . " OR v.codbarras = '" . $find . "'"
+        . " OR LOWER(p.descripcion) LIKE '%" . $find . "%'"
+        . " ORDER BY v." . $field . " ASC";
 
         foreach (self::$dataBase->selectLimit($sql, CodeModel::ALL_LIMIT) as $data) {
             $data['description'] = $this->getAttributeDescription(
@@ -166,11 +167,11 @@ class Variante extends Base\ModelClass
     {
         $description = $onlyAttributes ? '' : $this->getProducto()->descripcion;
         return $this->getAttributeDescription(
-                $this->idatributovalor1,
-                $this->idatributovalor2,
-                $this->idatributovalor3,
-                $this->idatributovalor4,
-                $description
+            $this->idatributovalor1,
+            $this->idatributovalor2,
+            $this->idatributovalor3,
+            $this->idatributovalor4,
+            $description
         );
     }
 

@@ -20,6 +20,7 @@ namespace FacturaScripts\Core\Lib\ExtendedController;
 
 use FacturaScripts\Core\Lib\ExtendedController\BusinessDocumentView;
 use FacturaScripts\Dinamic\Model\Proveedor;
+use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 
 /**
  * Description of PurchaseDocumentController
@@ -39,7 +40,9 @@ abstract class PurchaseDocumentController extends BusinessDocumentController
             [
                 'icon' => 'fas fa-hashtag',
                 'label' => 'numsupplier',
-                'name' => 'numproveedor'
+                'name' => 'numproveedor',
+                'maxlength' => '8'
+                
             ]
         ];
     }
@@ -98,5 +101,83 @@ abstract class PurchaseDocumentController extends BusinessDocumentController
         }
 
         return 'ERROR: ' . $this->toolBox()->i18n()->trans('supplier-not-found');
+    }
+
+    /**
+     * Run the autocomplete action.
+     * Returns a JSON string for the searched values.
+     *
+     * @return array
+     */
+    protected function autocompleteAction(): array
+    {
+        $data = $this->requestGet(['field', 'fieldcode', 'fieldfilter', 'fieldtitle', 'formname', 'source', 'strict', 'term','codproveedor']);
+        if ($data['source'] == '') {
+            return $this->getAutocompleteValues($data['formname'], $data['field']);
+        }
+
+        $filter_json=json_decode($data['fieldfilter'],true);
+        
+        $where = [];
+        $join='';
+
+        switch ($data['fieldfilter']) {
+            case 'productos_proveedor':
+               $codproveedor =  $data['codproveedor'];
+               if( $codproveedor ){
+                $join = "INNER JOIN productosprov ON productosprov.idproducto = v.idproducto AND productosprov.codproveedor = $codproveedor";
+                
+               }
+                break;
+            
+            default:
+
+                foreach (DataBaseWhere::applyOperation($data['fieldfilter'] ?? '') as $field => $operation) {
+                    $value = $this->request->get($field);
+                    $where[] = new DataBaseWhere($field, $value, '=', $operation);
+                } 
+                break;
+        }
+            
+
+    
+
+        $results = [];
+        $utils = $this->toolBox()->utils();
+        foreach ($this->codeModel->search($data['source'], $data['fieldcode'], $data['fieldtitle'], $data['term'], $where, $join) as $value) {
+            $results[] = ['key' => $utils->fixHtml($value->code), 'value' => $utils->fixHtml($value->description)];
+        }
+
+        if (empty($results) && '0' == $data['strict']) {
+            $results[] = ['key' => $data['term'], 'value' => $data['term']];
+        } elseif (empty($results)) {
+            $results[] = ['key' => null, 'value' => $this->toolBox()->i18n()->trans('no-data')];
+        }
+
+        return $results;
+    }
+
+     /**
+     * Load views and document.
+     */
+    protected function createViews()
+    {
+        /// tabs on top
+        $this->setTabsPosition('top');
+
+        /// document tab
+        $fullModelName = self::MODEL_NAMESPACE . $this->getModelClassName();
+        $view = new BusinessDocumentView($this->getLineXMLView(), 'new', $fullModelName);
+        $view->template =  'Master/PurchaseDocumentView.html.twig';
+
+        $this->addCustomView($view->getViewName(), $view);
+        $this->setSettings($view->getViewName(), 'btnPrint', true);
+
+        /// edit tab
+        $viewName = 'Edit' . $this->getModelClassName();
+        $this->addEditView($viewName, $this->getModelClassName(), 'detail', 'fas fa-edit');
+
+        /// disable delete button
+        $this->setSettings($viewName, 'btnDelete', false);
     }
 }

@@ -171,6 +171,22 @@ class WidgetAutocomplete extends WidgetSelect
         $this->strict = isset($child['strict']) ? ($child['strict'] == 'true') : true;
     }
 
+
+    /**
+     * Obtains the configuration of the datasource used in obtaining data
+     *
+     * @return array
+     */
+    public function getDataSource(): array
+    {
+        return [
+            'source' => $this->source,
+            'fieldcode' => $this->fieldcode,
+            'fieldtitle' => $this->fieldtitle,
+            'fieldfilter' => $this->fieldfilter,
+        ];
+    }
+
     /**
      * 
      * @return string

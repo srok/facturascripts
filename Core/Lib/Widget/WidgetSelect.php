@@ -135,7 +135,7 @@ class WidgetSelect extends BaseWidget
         return [
             'source' => $this->source,
             'fieldcode' => $this->fieldcode,
-            'fieldtitle' => $this->fieldtitle
+            'fieldtitle' => $this->fieldtitle,
         ];
     }
 

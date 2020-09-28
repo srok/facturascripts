@@ -54,7 +54,6 @@ function businessDocViewSubjectChanged() {
         data[value.name] = value.value;
     });
     data.action = "subject-changed";
-    console.log("data", data);
 
     $.ajax({
         type: "POST",
@@ -79,7 +78,6 @@ function businessDocViewSubjectChanged() {
                 $("#doc_codoperaciondoc").val(results.codoperaciondoc);
             }
             
-            console.log("results", results);
 
             businessDocViewRecalculate();
         },
@@ -96,7 +94,6 @@ function businessDocViewRecalculate() {
     });
     data.action = "recalculate-document";
     data.lines = getGridData();
-    console.log("data", data);
 
     $.ajax({
         type: "POST",
@@ -120,7 +117,6 @@ function businessDocViewRecalculate() {
             });
 
             hsTable.render();
-            console.log("results", results);
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText);
@@ -137,7 +133,6 @@ function businessDocViewSave() {
     });
     data.action = "save-document";
     data.lines = getGridData();
-    console.log(data);
 
     $.ajax({
         type: "POST",
@@ -162,12 +157,18 @@ function businessDocViewSave() {
 }
 
 function businessDocViewSetAutocompletes(columns) {
+
     for (var key = 0; key < columns.length; key++) {
         if (columns[key].type === "autocomplete") {
             businessDocViewAutocompleteColumns.push(columns[key].data);
             var source = columns[key].source["source"];
             var field = columns[key].source["fieldcode"];
             var title = columns[key].source["fieldtitle"];
+            var fieldfilter = columns[key].source["fieldfilter"];
+            var codproveedor = function(){
+                return $('#codproveedorAutocomplete').val()
+            };
+
             columns[key].source = function (query, process) {
                 var ajaxData = {
                     term: query,
@@ -175,8 +176,11 @@ function businessDocViewSetAutocompletes(columns) {
                     field: field,
                     source: source,
                     fieldcode: field,
-                    fieldtitle: title
+                    fieldtitle: title,
+                    fieldfilter: fieldfilter,
+                    codproveedor: codproveedor
                 };
+
                 $.ajax({
                     type: "POST",
                     url: businessDocViewUrl,

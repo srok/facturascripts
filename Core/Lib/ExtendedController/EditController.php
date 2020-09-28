@@ -99,7 +99,7 @@ abstract class EditController extends PanelController
         }
     }
 
-       /**
+     /**
      * Run the actions that alter data before reading it.
      *
      * @param string $action
@@ -118,12 +118,12 @@ abstract class EditController extends PanelController
                 break;
         }
 
-        return true;
+        return parent::execPreviousAction( $action );
     }
 
    
 
-        /**
+     /**
      * Saves filter values for active view and user.
      */
     protected function saveFilterAction()

@@ -39,7 +39,8 @@ abstract class SalesDocumentController extends BusinessDocumentController
             [
                 'icon' => 'fas fa-hashtag',
                 'label' => 'number2',
-                'name' => 'numero2'
+                'name' => 'numero2',
+                'maxlength' => '8'
             ]
         ];
     }
@@ -143,5 +144,28 @@ abstract class SalesDocumentController extends BusinessDocumentController
         }
 
         return 'ERROR: ' . $this->toolBox()->i18n()->trans('customer-not-found');
+    }
+
+     /**
+     * Load views and document.
+     */
+    protected function createViews()
+    {
+        /// tabs on top
+        $this->setTabsPosition('top');
+
+        /// document tab
+        $fullModelName = self::MODEL_NAMESPACE . $this->getModelClassName();
+        $view = new BusinessDocumentView($this->getLineXMLView(), 'new', $fullModelName);
+        $view->template =  'Master/SalesDocumentView.html.twig';
+        $this->addCustomView($view->getViewName(), $view);
+        $this->setSettings($view->getViewName(), 'btnPrint', true);
+
+        /// edit tab
+        $viewName = 'Edit' . $this->getModelClassName();
+        $this->addEditView($viewName, $this->getModelClassName(), 'detail', 'fas fa-edit');
+
+        /// disable delete button
+        $this->setSettings($viewName, 'btnDelete', false);
     }
 }
