@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table>
+    <column>
+        <name>puntoventa</name>
+        <type>integer</type>
+       
+    </column>
+     <column>
+        <name>patron2</name>
+        <type>character varying(50)</type>
+    </column>
+     <constraint>
+        <name>ca_secuencias_documentos_puntosventa</name>
+        <type>FOREIGN KEY (puntoventa) REFERENCES puntosventa (codpv) ON DELETE CASCADE ON UPDATE CASCADE</type>
+    </constraint>
+</table>

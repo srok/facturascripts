@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : estados_documentos.xml
+    Author     : Francesc Pineda Segarra
+    Description:
+        Structure for the estados_documentos table.
+-->
+<table>
+    <column>
+        <name>altpattern</name>
+        <type>boolean</type>
+        <null>NO</null>
+    </column>
+</table>

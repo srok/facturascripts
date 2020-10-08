@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view>
+    <columns>
+        <column name="id" order="100" aign="right">
+            <widget type="number" decimal="0" fieldname="codpv" />
+        </column>
+        <column name="name" order="110">
+            <widget type="text" fieldname="descripcion" />
+        </column>
+         <column name="tipo" numcolumns="6" order="120">
+                <widget type="select" fieldname="tipo" required="true">
+                    <values title="manual">1</values>
+                    <values title="electronica">2</values>
+                    <values title="web">3</values>
+                </widget>
+         </column>
+    </columns>
+</view>

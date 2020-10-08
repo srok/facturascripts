@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : presupuestoscli.xml
+    Author     : Carlos Garcia Gomez
+    Description:
+        Structure for the presupuestoscli table.
+-->
+<table>
+    <column>
+        <name>codpv</name>
+        <type>integer</type>
+        <null>NO</null>
+    </column>  
+      <column>
+        <name>codigo</name>
+        <type>character varying(50)</type>
+        <null>NO</null>
+    </column>  
+    <constraint>
+        <name>ca_puntosventa_presupuestoscli</name>
+        <type>FOREIGN KEY (codpv) REFERENCES puntosventa (codpv) ON DELETE RESTRICT ON UPDATE CASCADE</type>
+    </constraint>
+   
+</table>

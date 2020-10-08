@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : facturasprov.xml
+    Author     : Carlos Garcia Gomez
+    Description:
+        Structure for the facturasprov table.
+--><table>
+    <column>
+        <name>codpv</name>
+        <type>integer</type>
+    </column>  
+      <column>
+        <name>codigo</name>
+        <type>character varying(50)</type>
+        <null>NO</null>
+    </column>  
+  
+   
+</table>

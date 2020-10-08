@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : presupuestosprov.xml
+    Author     : Carlos Garcia Gomez
+    Description:
+        Structure for the presupuestosprov table.
+-->
+<table>
+    <column>
+        <name>codpv</name>
+        <type>integer</type>
+    </column>  
+      <column>
+        <name>codigo</name>
+        <type>character varying(50)</type>
+        <null>NO</null>
+    </column>  
+  
+   
+</table>
