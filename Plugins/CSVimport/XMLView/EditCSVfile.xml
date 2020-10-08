@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * This file is part of CSVimport plugin for FacturaScripts.
+ * Copyright (C) 2020 Carlos Garcia Gomez <carlos@facturascripts.com>
+-->
+<view>
+    <columns>
+        <group name="data" numcolumns="12">
+            <column name="code" display="none" order="100">
+                <widget type="text" fieldname="id" required="true" />
+            </column>
+            <column name="full-path" numcolumns="4" order="110">
+                <widget type="file" fieldname="path" accept=".csv,.xls,.xlsx" required="true" readonly="dinamic" />
+            </column>
+            <column name="profile" order="120">
+                <widget type="select" fieldname="profile" translate="true" required="true">
+                    <values fieldtitle="customers">customers</values>
+                    <values fieldtitle="families">families</values>
+                    <values fieldtitle="manufacturers">manufacturers</values>
+                    <values fieldtitle="products">products</values>
+                    <values fieldtitle="suppliers">suppliers</values>
+                    <values fieldtitle="supplier-products">supplier-products</values>
+                </widget>
+            </column>
+            <column name="import-mode" order="130">
+                <widget type="select" fieldname="mode" translate="true" required="true">
+                    <values title="only-insert">insert</values>
+                    <values title="insert-update">update</values>
+                </widget>
+            </column>
+            <column name="size" order="140">
+                <widget type="number" decimal="0" fieldname="size" readonly="true" />
+            </column>
+            <column name="date" order="150">
+                <widget type="date" fieldname="date" readonly="true" />
+            </column>
+            <column name="no-utf8-file" numcolumns="12" order="160">
+                <widget type="checkbox" fieldname="noutf8file" />
+            </column>
+        </group>
+    </columns>
+</view>

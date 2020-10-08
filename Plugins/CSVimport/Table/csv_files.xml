@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : csv_files.xml
+    Author     : Carlos Garcia Gomez
+    Description:
+        Structure for the csv_files table.
+-->
+<table>
+    <column>
+        <name>date</name>
+        <type>date</type>
+        <null>NO</null>
+    </column>
+    <column>
+        <name>id</name>
+        <type>serial</type>
+        <null>NO</null>
+    </column>
+    <column>
+        <name>idfile</name>
+        <type>integer</type>
+        <null>NO</null>
+    </column>
+    <column>
+        <name>mode</name>
+        <type>character varying(10)</type>
+        <null>NO</null>
+    </column>
+    <column>
+        <name>name</name>
+        <type>character varying(100)</type>
+        <null>NO</null>
+    </column>
+    <column>
+        <name>noutf8file</name>
+        <type>boolean</type>
+    </column>
+    <column>
+        <name>options</name>
+        <type>text</type>
+    </column>
+    <column>
+        <name>path</name>
+        <type>character varying(200)</type>
+        <null>NO</null>
+    </column>
+    <column>
+        <name>profile</name>
+        <type>character varying(25)</type>
+        <null>NO</null>
+    </column>
+    <column>
+        <name>size</name>
+        <type>integer</type>
+        <null>NO</null>
+    </column>
+    <constraint>
+        <name>csv_files_pkey</name>
+        <type>PRIMARY KEY (id)</type>
+    </constraint>
+    <constraint>
+        <name>ca_csv_files_attached_files</name>
+        <type>FOREIGN KEY (idfile) REFERENCES attached_files (idfile) ON DELETE CASCADE ON UPDATE CASCADE</type>
+    </constraint>
+</table>

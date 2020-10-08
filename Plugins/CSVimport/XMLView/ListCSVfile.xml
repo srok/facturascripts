@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * This file is part of CSVimport plugin for FacturaScripts.
+ * Copyright (C) 2020 Carlos Garcia Gomez <carlos@facturascripts.com>
+-->
+<view>
+    <columns>
+        <column name="code" display="none" order="100">
+            <widget type="text" fieldname="id" />
+        </column>
+        <column name="name" order="110">
+            <widget type="text" fieldname="name" />
+        </column>
+        <column name="profile" order="120">
+            <widget type="select" fieldname="profile" translate="true">
+                <values fieldtitle="customers">customers</values>
+                <values fieldtitle="families">families</values>
+                <values fieldtitle="manufacturers">manufacturers</values>
+                <values fieldtitle="products">products</values>
+                <values fieldtitle="suppliers">suppliers</values>
+                <values fieldtitle="supplier-products">supplier-products</values>
+            </widget>
+        </column>
+        <column name="size" display="right" order="130">
+            <widget type="number" decimal="0" fieldname="size" />
+        </column>
+        <column name="date" display="right" order="140">
+            <widget type="date" fieldname="date" />
+        </column>
+    </columns>
+</view>

@@ -1,0 +1,120 @@
+{% set currencyIcon = fsc.currentView().icon %}
+
+{% for item in fsc.getPriceTabItems() %}
+    <form method="post">
+        <input type="hidden" name="action" value="edit-price-tab" />
+        <input type="hidden" name="activetab" value="{{ fsc.currentView().getViewName() }}" />
+        <input type="hidden" name="decimals" value="{{ item.decimals }}" />
+        <input type="hidden" name="idvariante" value="{{ item.variant.idvariante }}" />
+        <input type="hidden" name="iva" value="{{ item.tax }}" />
+        <div class="card shadow mb-3">
+            <div class="card-body">
+                <div class="form-row align-items-end">
+                    <div class="col">
+                        {{ i18n.trans('reference') }}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-hashtag"></i>
+                                </span>
+                            </div>
+                            <input type="text" value="{{ item.variant.referencia }}" class="form-control" readonly="" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        {{ i18n.trans('cost-price') }}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="{{ currencyIcon }}"></i>
+                                </span>
+                            </div>
+                            <input type="number" name="coste" value="{{ item.variant.coste }}" step="any" class="form-control prices-tab-cost" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        {{ i18n.trans('margin') }}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-percentage"></i>
+                                </span>
+                            </div>
+                            <input type="number" name="margen" value="{{ item.variant.margen }}" step="any" class="form-control prices-tab-margin" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        {{ i18n.trans('price') }}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="{{ currencyIcon }}"></i>
+                                </span>
+                            </div>
+                            <input type="number" name="precio" value="{{ item.variant.precio }}" step="any" class="form-control prices-tab-price" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        {{ i18n.trans('price-with-tax') }}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="{{ currencyIcon }}"></i>
+                                </span>
+                            </div>
+                            <input type="text" name="precioimp" class="form-control prices-tab-pricetax" placeholder="{{ item.pricetax }}" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if item.rates | length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0">
+                        <thead>
+                            <tr>
+                                <th>{{ i18n.trans('rate') }}</th>
+                                <th>{{ i18n.trans('formula-to-apply') }}</th>
+                                <th class="text-right">{{ i18n.trans('new-price') }}</th>
+                                <th class="text-right">{{ i18n.trans('price-with-tax') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rate in item.rates %}
+                                <tr>
+                                    <td>
+                                        <input type="text" name="codtarifa_{{ loop.index }}" value="{{ rate.codtarifa }}" class="form-control" readonly="" />
+                                    </td>
+                                    <td>
+                                        <input type="text" value="{{ rate.explain }}" class="form-control" readonly="" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name="precio_{{ loop.index }}" class="form-control text-right" placeholder="{{ rate.price }}" autocomplete="off" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name="precioimp_{{ loop.index }}" class="form-control text-right" placeholder="{{ rate.pricetax }}" autocomplete="off" />
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+            <div class="card-body">
+                <div class="row">
+                    {% if item.rates | length > 0 %}
+                        <div class="col">
+                            <button type="button" class="btn btn-sm btn-warning btn-reset-rates">
+                                <i class="fas fa-redo fa-fw"></i> {{ i18n.trans('reset-rates') }}
+                            </button>
+                        </div>
+                    {% endif %}
+                    <div class="col text-right">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="fas fa-save fa-fw"></i> {{ i18n.trans('save') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endfor %}

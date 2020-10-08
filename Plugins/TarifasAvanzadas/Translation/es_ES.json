@@ -1,0 +1,10 @@
+{
+    "accumulate-discount": "Acumular descuento",
+    "discounts": "Descuentos",
+    "fixed-price": "Precio fijo",
+    "formula-cost-price-alt": "Precio de coste + %x%% + %y%",
+    "formula-sale-price-alt": "Precio - %x%% - %y%",
+    "prices": "Precios",
+    "price-with-tax": "Precio + impuestos",
+    "reset-rates": "Reiniciar tarifas"
+}

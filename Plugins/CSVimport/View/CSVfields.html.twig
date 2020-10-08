@@ -1,0 +1,57 @@
+<form method="post">
+    <input type="hidden" name="action" value="import" />
+    <div class="card border-warning">
+        <div class="card-header bg-warning">
+            <h2 class="h5">
+                <i class="fas fa-file-import"></i> {{ i18n.trans('import-options') }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>{{ i18n.trans('column') }}</th>
+                        <th>{{ i18n.trans('value-1') }}</th>
+                        <th>{{ i18n.trans('value-2') }}</th>
+                        <th>{{ i18n.trans('value-3') }}</th>
+                        <th>{{ i18n.trans('use-as') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set profile = fsc.getModel().getProfile() %}
+                    {% for row in profile.getRows() %}
+                        <tr>
+                            <td>{{ row.title }}</td>
+                            <td>{{ row.value1 }}</td>
+                            <td>{{ row.value2 }}</td>
+                            <td>{{ row.value3 }}</td>
+                            <td class="{{ row.use is empty ? 'table-warning' : 'table-success' }}">
+                                {% set fieldName = 'field' ~ loop.index0 %}
+                                <select name="{{ fieldName }}" class="form-control">
+                                    <option value="">{{ i18n.trans('do-not-use') }}</option>
+                                    <option value="">------</option>
+                                    {% for key, option in profile.getDataFields() %}
+                                        {% if row.use == key %}
+                                            <option value="{{ key }}" selected="">{{ i18n.trans(option.title) }}</option>
+                                        {% else %}
+                                            <option value="{{ key }}">{{ i18n.trans(option.title) }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="table-warning">{{ i18n.trans('no-data') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body text-right">
+            <button type="submit" class="btn btn-warning">
+                <i class="fas fa-file-import"></i> {{ i18n.trans('import') }}
+            </button>
+        </div>
+    </div>
+</form>

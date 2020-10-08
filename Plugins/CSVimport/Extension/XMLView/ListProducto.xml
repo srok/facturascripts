@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) 2019-2020 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * @author Carlos García Gómez <carlos@facturascripts.com>
+-->
+<view>
+    <modals>
+        <group name="import-products" title="import-products" icon="fas fa-file-import">
+            <column name="file" numcolumns="12" order="100">
+                <widget type="file" fieldname="productsfile" accept=".csv,.xls,.xlsx" required="true" />
+            </column>
+            <column name="import-mode" numcolumns="12" order="110">
+                <widget type="select" fieldname="mode" translate="true" required="true">
+                    <values title="only-insert">insert</values>
+                    <values title="insert-update">update</values>
+                    <values title="advanced">advanced</values>
+                </widget>
+            </column>
+        </group>
+    </modals>
+</view>
