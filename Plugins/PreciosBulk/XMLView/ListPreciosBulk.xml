@@ -1,0 +1,48 @@
+<view>
+    <columns>
+
+            <column name="supplier" numcolumns="6" order="10">
+                <widget type="autocomplete" fieldname="codproveedor" required="true" onclick="EditProveedor">
+                    <values source="proveedores" fieldcode="codproveedor" fieldtitle="nombre" />
+                </widget>
+            </column>
+            <column name="family" titleurl="ListFamilia" numcolumns="6" order="11">
+                <widget type="autocomplete" fieldname="codfamilia" onclick="EditFamilia">
+                    <values source="familias" fieldcode="codfamilia" fieldtitle="descripcion" />
+                </widget>
+            </column>
+
+            <column name="neto" order="140">
+                <widget type="percentage" fieldname="neto" />
+            </column>
+            <column name="dto"  order="150">
+                <widget type="percentage" fieldname="dtopor" />
+            </column>
+            <column name="dto-2"  order="160">
+                <widget type="percentage" fieldname="dtopor2" />
+            </column>
+            <column name="dto-3"  order="160">
+                <widget type="percentage" fieldname="dtopor3" />
+            </column>
+            <column name="dto-4"  order="170">
+                <widget type="percentage" fieldname="dtopor4" />
+            </column>
+            <column name="dto-5"  order="180">
+                <widget type="percentage" fieldname="dtopor5" />
+            </column>
+     
+            <column name="flete"  order="190">
+                <widget type="percentage" fieldname="flete" />
+            </column>
+            <column name="utilidad"  order="200">
+                <widget type="percentage" fieldname="utilidad" />
+            </column>
+            <column name="aplicar_costo"  order="210">
+                <widget type="checkbox" fieldname="aplicar_costo" />
+            </column>
+              <column name="update-time" display="right" order="300">
+                <widget type="datetime" fieldname="fecha" />
+            </column>
+    </columns>
+    
+</view>

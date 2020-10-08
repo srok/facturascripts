@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : logbulkprovprecios.xml
+    Author     : Srok Desarrollos
+    Description:
+        Structure for the logbulkprovprecios table.
+-->
+<table>
+            <column>
+                <name>codproveedor</name>
+                <type>integer</type>
+                <null>NO</null>
+            </column>
+             <column>
+                <name>codfamilia</name>
+                <type>integer</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>neto</name>
+                <type>double precision</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>dtopor</name>
+                <type>double precision</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>dtopor2</name>
+                <type>double precision</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>dtopor3</name>
+                <type>double precision</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>dtopor4</name>
+                <type>double precision</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>dtopor5</name>
+                <type>double precision</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>flete</name>
+                <type>double precision</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>utilidad</name>
+                <type>double precision</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>aplicar_costo</name>
+                <type>boolean</type>
+                <null>NO</null>
+                <default>0</default>
+            </column>
+            <column>
+                <name>fecha</name>
+                <type>timestamp</type>
+            </column>
+            <column>
+                <name>id</name>
+                <type>serial</type>
+                <null>NO</null>
+            </column>
+             <constraint>
+                <name>logbulkprovprecio_pkey</name>
+                <type>PRIMARY KEY (id)</type>
+            </constraint>
+</table>
