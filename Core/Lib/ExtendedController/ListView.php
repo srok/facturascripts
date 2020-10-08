@@ -197,7 +197,6 @@ class ListView extends BaseView
         if ($this->offset > $this->count) {
             $this->offset = 0;
         }
-
         /// needed when megasearch force data reload
         $this->cursor = [];
         if ($this->count > 0) {

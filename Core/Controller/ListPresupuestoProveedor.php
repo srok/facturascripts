@@ -39,9 +39,10 @@ class ListPresupuestoProveedor extends ListBusinessDocument
     public function getPageData()
     {
         $data = parent::getPageData();
+        /*
         $data['menu'] = 'purchases';
         $data['title'] = 'estimations';
-        $data['icon'] = 'fas fa-copy';
+        $data['icon'] = 'fas fa-copy';*/
         return $data;
     }
 

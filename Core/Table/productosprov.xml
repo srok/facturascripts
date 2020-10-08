@@ -27,6 +27,22 @@
         <name>dtopor2</name>
         <type>double precision</type>
     </column>
+         <column>
+        <name>dtopor3</name>
+        <type>double precision</type>
+    </column>
+     <column>
+        <name>dtopor4</name>
+        <type>double precision</type>
+    </column>
+    <column>
+        <name>dtopor5</name>
+        <type>double precision</type>
+    </column>
+    <column>
+        <name>fletepor</name>
+        <type>double precision</type>
+    </column>
     <column>
         <name>id</name>
         <type>serial</type>

@@ -6,7 +6,7 @@
 /MyFiles/
 /nbproject/
 /node_modules/
-/Plugins/
+#/Plugins/
 /vendor/
 .DS_Store
 .htaccess

@@ -43,6 +43,8 @@ abstract class ModelClass extends ModelCore
      */
     public function all(array $where = [], array $order = [], int $offset = 0, int $limit = 50, string $join = null, string $select = null, string $group_by = null)
     {
+
+
         if( !$select ){
             $select = '*';
         }
@@ -103,6 +105,7 @@ abstract class ModelClass extends ModelCore
      */
     public function count(array $where = [], string $join = null, string $group_by = null)
     {
+       
         $sql = 'SELECT COUNT(1) AS total FROM ' . static::tableName() ." $join " . DataBaseWhere::getSQLWhere($where). " $group_by";
         $data = self::$dataBase->select($sql);
         return empty($data) ? 0 : (int) $data[0]['total'];

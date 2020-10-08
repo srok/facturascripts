@@ -71,3 +71,17 @@ $(document).ready(function () {
         e.stopPropagation();
     });
 });
+
+$(document).ready(function() { 
+
+    $(document).find('[id$=-tab]').click(function(){
+        window.location.hash = $(this).attr('href');
+    })
+
+    if ( window.location.hash ) {        
+
+       $(window.location.hash + '-tab').click();
+
+    }
+});
+

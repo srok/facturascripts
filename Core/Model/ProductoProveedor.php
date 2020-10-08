@@ -19,6 +19,7 @@
 namespace FacturaScripts\Core\Model;
 
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
+
 use FacturaScripts\Dinamic\Lib\CostPriceTools;
 use FacturaScripts\Dinamic\Model\Divisa as DinDivisa;
 use FacturaScripts\Dinamic\Model\Proveedor as DinProveedor;
@@ -65,6 +66,24 @@ class ProductoProveedor extends Base\ModelClass
      */
     public $dtopor2;
 
+      /**
+     *
+     * @var float
+     */
+    public $dtopor3;
+
+      /**
+     *
+     * @var float
+     */
+    public $dtopor4;
+
+      /**
+     *
+     * @var float
+     */
+    public $dtopor5;
+
     /**
      *
      * @var int
@@ -89,6 +108,12 @@ class ProductoProveedor extends Base\ModelClass
      */
     public $referencia;
 
+      /**
+     *
+     * @var string
+     */
+    public $idproducto;
+
     /**
      *
      * @var string
@@ -104,6 +129,8 @@ class ProductoProveedor extends Base\ModelClass
         $this->neto = 0.0;
         $this->precio = 0.0;
     }
+
+
 
     /**
      * Returns the Equivalent Unified Discount.
@@ -211,6 +238,9 @@ class ProductoProveedor extends Base\ModelClass
      */
     public function url(string $type = 'auto', string $list = 'List'): string
     {
-        return $this->getVariant()->url($type);
+        if( $type == 'list' ){
+            return 'EditProducto?code='.$this->idproducto.'#ListProductoProveedor';
+        }
+        return parent::url( $type,$list );
     }
 }

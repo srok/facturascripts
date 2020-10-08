@@ -83,13 +83,16 @@ class EditListView extends BaseView
 
     {
 
+
         $this->offset = $offset < 0 ? $this->offset : $offset;
         $this->order = empty($order) ? $this->order : $order;
-
         $finalWhere = empty($where) ? $this->where : $where;
+        
+        $this->count = \is_null($this->model) ? 0 : $this->model->count($finalWhere, $join, $group_by);
 
 
         if ($this->count > 0) {
+
             $this->cursor = $this->model->all($finalWhere, $this->order, $this->offset, $limit, $join, $select, $group_by);
         }
 

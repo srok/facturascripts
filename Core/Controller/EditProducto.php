@@ -65,7 +65,7 @@ class EditProducto extends EditController
     protected function createViews()
     {
         parent::createViews();
-        $this->createViewsVariants();
+       // $this->createViewsVariants();
         $this->createViewsStock();
         $this->createViewsSuppliers();
         $this->createViewsLineasFacturas();
@@ -127,7 +127,7 @@ class EditProducto extends EditController
         $this->setSettings($viewName, 'modalInsert', 'new-supplier');
 
         /// disable clickable row
-        $this->setSettings($viewName, 'clickable', false);
+        // $this->setSettings($viewName, 'clickable', false);
     }
 
     /**
@@ -208,17 +208,18 @@ class EditProducto extends EditController
      */
     protected function loadCustomStockWidget(string $viewName)
     {
+
         $references = [];
         $idproducto = $this->getViewModelValue('EditProducto', 'idproducto');
         $where = [new DataBaseWhere('idproducto', $idproducto)];
         foreach ($this->codeModel->all('variantes', 'referencia', 'referencia', false, $where) as $code) {
             $references[] = ['value' => $code->code, 'title' => $code->description];
         }
-
         $column = $this->views[$viewName]->columnForName('reference');
         if ($column) {
             $column->widget->setValuesFromArray($references, false);
         }
+
     }
 
     /**
@@ -231,7 +232,7 @@ class EditProducto extends EditController
     {
         $idproducto = $this->getViewModelValue('EditProducto', 'idproducto');
         $where = [new DataBaseWhere('idproducto', $idproducto)];
-
+        
         switch ($viewName) {
             case 'EditProducto':
             parent::loadData($viewName, $view);
@@ -257,6 +258,7 @@ class EditProducto extends EditController
                 new DataBaseWhere('referencia', $this->getViewModelValue('EditProducto', 'referencia'), '=', 'OR')
             ];
             $view->loadData('', $where2);
+            $view->totalAmounts = [];
             break;
             case 'ListLineaFacturaProveedor':
             $where2 = [

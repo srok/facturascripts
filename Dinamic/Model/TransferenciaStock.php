@@ -4,6 +4,6 @@
  * Class created by Core/Base/PluginManager
  * @author FacturaScripts <carlos@facturascripts.com>
  */
-class TransferenciaStock extends \FacturaScripts\Core\Model\TransferenciaStock
+class TransferenciaStock extends \FacturaScripts\Plugins\StockAvanzado\Model\TransferenciaStock
 {
 }
