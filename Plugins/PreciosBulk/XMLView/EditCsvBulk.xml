@@ -1,0 +1,28 @@
+<view>
+    <columns>
+        <group name="main" numcolumns="12">
+            <column name="supplier" numcolumns="6" order="10">
+                <widget type="autocomplete" fieldname="codproveedor" required="true">
+                    <values source="proveedores" fieldcode="codproveedor" fieldtitle="nombre" />
+                </widget>
+            </column>
+
+            <column name="full-path" numcolumns="8" order="110">
+                <widget type="file" fieldname="path"  required="true"  />
+            </column>
+        </group>
+        <group numcolumns="4">
+          
+            <column name="aplicar_costo"  order="210">
+                <widget type="checkbox" fieldname="aplicar_costo" />
+            </column>
+        </group>
+
+    </columns>
+    <rows>
+
+        <row type="actions">
+            <button type="action" label="update-prices" color="primary" action="bulk-update-prices" icon="fas fa-save" confirm="true" />
+        </row>
+    </rows>
+</view>

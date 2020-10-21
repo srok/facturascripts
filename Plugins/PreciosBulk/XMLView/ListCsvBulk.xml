@@ -1,0 +1,20 @@
+<view>
+    <columns>
+
+            <column name="supplier" numcolumns="6" order="10">
+                <widget type="autocomplete" fieldname="codproveedor" required="true" onclick="EditProveedor">
+                    <values source="proveedores" fieldcode="codproveedor" fieldtitle="nombre" />
+                </widget>
+            </column>
+            <column name="full-path" numcolumns="8" order="110">
+                <widget type="file" fieldname="path" required="true" readonly="true" />
+            </column>
+            <column name="aplicar_costo"  order="210">
+                <widget type="checkbox" fieldname="aplicar_costo" />
+            </column>
+              <column name="update-time" display="right" order="300">
+                <widget type="datetime" fieldname="fecha" />
+            </column>
+    </columns>
+    
+</view>
