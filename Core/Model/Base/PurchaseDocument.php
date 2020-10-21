@@ -223,6 +223,9 @@ abstract class PurchaseDocument extends TransformerDocument
         if ($supplierProd->loadFromCode('', $where)) {
             $newLine->dtopor = $supplierProd->dtopor;
             $newLine->dtopor2 = $supplierProd->dtopor2;
+            $newLine->dtopor3 = $supplierProd->dtopor3;
+            $newLine->dtopor4 = $supplierProd->dtopor4;
+            $newLine->dtopor5 = $supplierProd->dtopor5;
             $newLine->pvpunitario = $supplierProd->precio;
         }
     }

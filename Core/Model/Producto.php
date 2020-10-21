@@ -327,6 +327,8 @@ class Producto extends Base\ModelClass
             }
         }
 
+        //TODO: guardar historial de precios de venta.
+
         if ($newPrecio != $this->precio || $newReferencia != $this->referencia) {
             $this->precio = $newPrecio;
             $this->referencia = $newReferencia;

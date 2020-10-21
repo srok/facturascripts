@@ -49,6 +49,15 @@
         <column name="dto-2" display="none" order="160">
             <widget type="number" fieldname="dtopor2"/>
         </column>
+         <column name="dto-3" display="none" order="161">
+            <widget type="number" fieldname="dtopor3"/>
+        </column>
+         <column name="dto-4" display="none" order="162">
+            <widget type="number" fieldname="dtopor4"/>
+        </column>
+         <column name="dto-5" display="none" order="163">
+            <widget type="number" fieldname="dtopor5"/>
+        </column>
         <column name="net" display="right" order="170">
             <widget type="money" fieldname="pvptotal" readonly="true"/>
         </column>
@@ -58,11 +67,14 @@
         <column name="re" display="none" order="190">
             <widget type="number" fieldname="recargo"/>
         </column>
-        <column name="irpf" display="right" order="200">
+        <column name="irpf" display="none" order="200">
             <widget type="number" fieldname="irpf"/>
         </column>
         <column name="supplied" display="none" order="210">
             <widget type="checkbox" fieldname="suplido"/>
+        </column>
+        <column name="update-price" display="center" order="210">
+            <widget type="checkbox" value="true" fieldname="updateprice"/>
         </column>
     </columns>
     <rows>

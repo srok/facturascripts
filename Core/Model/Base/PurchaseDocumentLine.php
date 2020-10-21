@@ -20,6 +20,7 @@ namespace FacturaScripts\Core\Model\Base;
 
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Dinamic\Model\ProductoProveedor;
+use FacturaScripts\Dinamic\Model\Variante;
 
 /**
  * Description of PurchaseDocumentLine
@@ -29,6 +30,7 @@ use FacturaScripts\Dinamic\Model\ProductoProveedor;
 abstract class PurchaseDocumentLine extends BusinessDocumentLine
 {
 
+    public $updateprice = 0;
     /**
      * 
      * @return bool
@@ -37,6 +39,19 @@ abstract class PurchaseDocumentLine extends BusinessDocumentLine
     {
         if (parent::save()) {
             $this->updateSupplierProduct();
+            if( $this->updateprice ){
+
+                $Variant = new Variante();
+
+                $where = [
+                    new DataBaseWhere('idproducto', $this->idproducto)
+                ];
+
+                $Variant->loadFromCode('', $where);
+                $Variant->coste = $this->pvpunitario;
+
+                $Variant->save();
+            }
             return true;
         }
 
@@ -62,6 +77,9 @@ abstract class PurchaseDocumentLine extends BusinessDocumentLine
             $product->codproveedor = $doc->codproveedor;
             $product->dtopor = $this->dtopor;
             $product->dtopor2 = $this->dtopor2;
+            $product->dtopor3 = $this->dtopor3;
+            $product->dtopor4 = $this->dtopor4;
+            $product->dtopor5 = $this->dtopor5;
             $product->idproducto = $this->idproducto;
             $product->precio = $this->pvpunitario;
             $product->referencia = $this->referencia;
