@@ -133,7 +133,7 @@ class EditPreciosBulk extends PanelController
         $and_familia = "AND productos.codfamilia = $codfamilia";
       }
 
-      $neto = (float) $this->request->request->get('neto') ?? 0;
+      $precio = (float) $this->request->request->get('precio') ?? 0;
       $dtopor = (float) $this->request->request->get('dtopor') ?? 0;
       $dtopor2 = (float) $this->request->request->get('dtopor2') ?? 0;
       $dtopor3 = (float) $this->request->request->get('dtopor3') ?? 0;
@@ -141,16 +141,16 @@ class EditPreciosBulk extends PanelController
       $dtopor5 = (float) $this->request->request->get('dtopor5') ?? 0;
       $fletepor = (float) $this->request->request->get('flete') ?? 0;
       $utilidad = (float) $this->request->request->get('utilidad') ?? 0;
-      $netoporc = (float) 1 + ($neto / 100);
+      $precioporc = (float) 1 + ($precio / 100);
       $dre = (float) 1 - ( ( 1 - $dtopor / 100 ) * ( 1 - $dtopor2 / 100 ) * ( 1 - $dtopor3 / 100 ) * ( 1 - $dtopor4 / 100 ) * ( 1 - $dtopor5 / 100 ) );
       $margenporc = (float) 1 + ($utilidad / 100);
 
 
       if( $this->request->request->get('aplicar_costo') ){
-       $update_producto = ",variantes.coste = ROUND((variantes.coste * $netoporc) - (variantes.coste * $netoporc * $dre), 2),
+       $update_producto = ",variantes.coste = productosprov.neto,
        variantes.margen = $utilidad,
-       variantes.precio = ROUND(((productosprov.neto * $netoporc) - (productosprov.neto * $netoporc * $dre)) * $margenporc, 2),
-       productos.precio = ROUND(((productosprov.neto * $netoporc) - (productosprov.neto * $netoporc * $dre)) * $margenporc, 2)";
+       variantes.precio = ROUND(productosprov.neto * $margenporc, 2),
+       productos.precio = variantes.precio";
      }
 
      $sql = "UPDATE productosprov 
@@ -164,8 +164,8 @@ class EditPreciosBulk extends PanelController
      productosprov.dtopor4 = $dtopor4,
      productosprov.dtopor5 = $dtopor5,
      productosprov.fletepor = $fletepor,
-     productosprov.neto = ROUND(productosprov.neto * $netoporc, 2),
-     productosprov.precio = ROUND((productosprov.neto * $netoporc) - (productosprov.neto * $netoporc * $dre), 2)
+     productosprov.precio = ROUND(productosprov.precio * $precioporc, 2),
+     productosprov.neto = ROUND((productosprov.precio ) - (productosprov.precio  * $dre), 2)
      $update_producto
      WHERE productosprov.codproveedor = $idprov
      ";

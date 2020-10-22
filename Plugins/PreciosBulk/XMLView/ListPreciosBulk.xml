@@ -12,8 +12,8 @@
                 </widget>
             </column>
 
-            <column name="neto" order="140">
-                <widget type="percentage" fieldname="neto" />
+            <column name="precio" order="140">
+                <widget type="percentage" fieldname="precio" />
             </column>
             <column name="dto"  order="150">
                 <widget type="percentage" fieldname="dtopor" />

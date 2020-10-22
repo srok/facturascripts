@@ -6,14 +6,25 @@
         Structure for the logbulkprovprecios table.
 -->
 <table>
-            <column>
-                <name>codproveedor</name>
+           
+             <column>
+                <name>idvariante</name>
                 <type>integer</type>
                 <null>NO</null>
             </column>
-             <column>
-                <name>codfamilia</name>
+              <column>
+                <name>idproducto</name>
                 <type>integer</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>coste</name>
+                <type>double precision</type>
+                <null>NO</null>
+            </column>
+            <column>
+                <name>margen</name>
+                <type>double precision</type>
                 <null>NO</null>
             </column>
             <column>
@@ -21,47 +32,17 @@
                 <type>double precision</type>
                 <null>NO</null>
             </column>
+             <column>
+                <name>referencia</name>
+                <type>character varying(30)</type>
+                <null>NO</null>
+            </column>
             <column>
-                <name>dtopor</name>
+                <name>stockfis</name>
                 <type>double precision</type>
                 <null>NO</null>
             </column>
-            <column>
-                <name>dtopor2</name>
-                <type>double precision</type>
-                <null>NO</null>
-            </column>
-            <column>
-                <name>dtopor3</name>
-                <type>double precision</type>
-                <null>NO</null>
-            </column>
-            <column>
-                <name>dtopor4</name>
-                <type>double precision</type>
-                <null>NO</null>
-            </column>
-            <column>
-                <name>dtopor5</name>
-                <type>double precision</type>
-                <null>NO</null>
-            </column>
-            <column>
-                <name>flete</name>
-                <type>double precision</type>
-                <null>NO</null>
-            </column>
-            <column>
-                <name>utilidad</name>
-                <type>double precision</type>
-                <null>NO</null>
-            </column>
-            <column>
-                <name>aplicar_costo</name>
-                <type>boolean</type>
-                <null>NO</null>
-                <default>0</default>
-            </column>
+          
             <column>
                 <name>fecha</name>
                 <type>timestamp</type>
@@ -72,7 +53,7 @@
                 <null>NO</null>
             </column>
              <constraint>
-                <name>logbulkprovprecio_pkey</name>
+                <name>logvarianteprecio_pkey</name>
                 <type>PRIMARY KEY (id)</type>
             </constraint>
 </table>
