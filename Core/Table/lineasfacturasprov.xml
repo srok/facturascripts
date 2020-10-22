@@ -100,7 +100,6 @@
         <column>
         <name>updateprice</name>
         <type>boolean</type>
-        <null>NO</null>
     </column>
     <column>
         <name>recargo</name>

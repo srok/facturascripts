@@ -37,7 +37,10 @@ abstract class PurchaseDocumentLine extends BusinessDocumentLine
      */
     public function save()
     {
+
+
         if (parent::save()) {
+
             $this->updateSupplierProduct();
             if( $this->updateprice ){
 
@@ -48,7 +51,8 @@ abstract class PurchaseDocumentLine extends BusinessDocumentLine
                 ];
 
                 $Variant->loadFromCode('', $where);
-                $Variant->coste = $this->pvpunitario;
+                $Variant->coste = $this->pvptotal / $this->cantidad;
+
 
                 $Variant->save();
             }

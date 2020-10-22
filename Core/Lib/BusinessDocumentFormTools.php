@@ -96,7 +96,7 @@ class BusinessDocumentFormTools extends DinBusinessDocumentTools
 
         $newLine->descripcion = Utils::fixHtml($newLine->descripcion);
         $newLine->pvpsindto = $newLine->pvpunitario * $newLine->cantidad;
-        $newLine->pvptotal = $newLine->pvpsindto * (100 - $newLine->dtopor) / 100 * (100 - $newLine->dtopor2) / 100;
+        $newLine->pvptotal = $newLine->pvpsindto * (100 - $newLine->dtopor) / 100 * (100 - $newLine->dtopor2) / 100 * (100 - $newLine->dtopor3) / 100 * (100 - $newLine->dtopor4) / 100 * (100 - $newLine->dtopor5) / 100;
         $newLine->referencia = Utils::fixHtml($newLine->referencia);
 
         $suplido = isset($fLine['suplido']) && $fLine['suplido'] === 'true';

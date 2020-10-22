@@ -68,6 +68,9 @@ abstract class BusinessDocumentLine extends ModelOnChangeClass
      * @var float|int
      */
     public $dtopor2;
+    public $dtopor3;
+    public $dtopor4;
+    public $dtopor5;
 
     /**
      * Primary key.
@@ -172,6 +175,9 @@ abstract class BusinessDocumentLine extends ModelOnChangeClass
         $this->descripcion = '';
         $this->dtopor = 0.0;
         $this->dtopor2 = 0.0;
+        $this->dtopor3 = 0.0;
+        $this->dtopor4 = 0.0;
+        $this->dtopor5 = 0.0;
         $this->irpf = 0.0;
         $this->orden = 0;
         $this->pvpsindto = 0.0;
@@ -204,7 +210,7 @@ abstract class BusinessDocumentLine extends ModelOnChangeClass
     public function getEUDiscount()
     {
         $eud = 1.0;
-        foreach ([$this->dtopor, $this->dtopor2] as $dto) {
+        foreach ([$this->dtopor, $this->dtopor2, $this->dtopor3, $this->dtopor4, $this->dtopor5] as $dto) {
             $eud *= 1 - $dto / 100;
         }
 

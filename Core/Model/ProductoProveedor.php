@@ -126,6 +126,9 @@ class ProductoProveedor extends Base\ModelClass
         $this->actualizado = \date(self::DATETIME_STYLE);
         $this->dtopor = 0.0;
         $this->dtopor2 = 0.0;
+        $this->dtopor3 = 0.0;
+        $this->dtopor4 = 0.0;
+        $this->dtopor5 = 0.0;
         $this->neto = 0.0;
         $this->precio = 0.0;
     }
@@ -140,7 +143,7 @@ class ProductoProveedor extends Base\ModelClass
     public function getEUDiscount()
     {
         $eud = 1.0;
-        foreach ([$this->dtopor, $this->dtopor2] as $dto) {
+        foreach ([$this->dtopor, $this->dtopor2, $this->dtopor3, $this->dtopor4, $this->dtopor5] as $dto) {
             $eud *= 1 - $dto / 100;
         }
 

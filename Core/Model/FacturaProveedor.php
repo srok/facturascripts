@@ -33,6 +33,10 @@ class FacturaProveedor extends Base\PurchaseDocument
     use Base\ModelTrait;
     use Base\InvoiceTrait;
 
+    public $cae;
+    
+    public $cai;
+
     /**
      * Reset the values of all model properties.
      */
