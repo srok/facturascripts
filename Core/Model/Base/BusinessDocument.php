@@ -220,6 +220,8 @@ abstract class BusinessDocument extends ModelOnChangeClass
      */
     abstract public function updateSubject();
 
+    abstract public function getType();
+
     /**
      * Reset the values of all model properties.
      */
@@ -401,31 +403,31 @@ abstract class BusinessDocument extends ModelOnChangeClass
     {
         switch ($field) {
             case 'codalmacen':
-                foreach ($this->getLines() as $line) {
-                    $line->transfer($this->previousData['codalmacen'], $this->codalmacen);
-                }
-                break;
+            foreach ($this->getLines() as $line) {
+                $line->transfer($this->previousData['codalmacen'], $this->codalmacen);
+            }
+            break;
 
             case 'codserie':
-                BusinessDocumentCode::getNewCode($this);
-                break;
+            BusinessDocumentCode::getNewCode($this);
+            break;
 
             case 'fecha':
-                $oldCodejercicio = $this->codejercicio;
-                if (false === $this->setDate($this->fecha, $this->hora)) {
-                    return false;
-                } elseif ($this->codejercicio != $oldCodejercicio) {
-                    BusinessDocumentCode::getNewCode($this);
-                }
-                break;
+            $oldCodejercicio = $this->codejercicio;
+            if (false === $this->setDate($this->fecha, $this->hora)) {
+                return false;
+            } elseif ($this->codejercicio != $oldCodejercicio) {
+                BusinessDocumentCode::getNewCode($this);
+            }
+            break;
 
             case 'idempresa':
-                $this->toolBox()->i18nLog()->warning('non-editable-columns', ['%columns%' => 'idempresa']);
-                return false;
+            $this->toolBox()->i18nLog()->warning('non-editable-columns', ['%columns%' => 'idempresa']);
+            return false;
 
             case 'numero':
-                BusinessDocumentCode::getNewCode($this, false);
-                break;
+            BusinessDocumentCode::getNewCode($this, false);
+            break;
         }
 
         return parent::onChange($field);

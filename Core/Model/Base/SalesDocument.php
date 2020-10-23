@@ -141,6 +141,12 @@ abstract class SalesDocument extends TransformerDocument
      */
     public $totalcomision;
 
+
+    public function getType(  ){
+        return SALE_DOCUMENT_TYPE;
+    }
+
+
     /**
      * Reset the values of all model properties.
      */

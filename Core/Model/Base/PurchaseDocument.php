@@ -54,6 +54,10 @@ abstract class PurchaseDocument extends TransformerDocument
      */
     public $numproveedor;
 
+    public function getType(  ){
+        return PURCHASE_DOCUMENT_TYPE;
+    }
+
     public function clear()
     {
         parent::clear();
