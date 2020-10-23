@@ -7,6 +7,14 @@
 -->
 <table>
     <column>
+        <name>cae</name>
+        <type>integer</type>
+    </column>
+    <column>
+        <name>cai</name>
+        <type>integer</type>
+    </column>
+    <column>
         <name>cifnif</name>
         <type>character varying(30)</type>
         <null>NO</null>

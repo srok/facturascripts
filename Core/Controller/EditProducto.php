@@ -70,6 +70,7 @@ class EditProducto extends EditController
         $this->createViewsSuppliers();
         $this->createViewsLineasFacturas();
         $this->createViewsLineasPedidos();
+        $this->createViewsHistorialPrecios();
     }
 
     /**
@@ -110,6 +111,22 @@ class EditProducto extends EditController
         $statusValues = $this->codeModel->all('estados_documentos', 'idestado', 'nombre', true, $where);
 
         $this->views[$viewName]->addFilterSelect('idestado', 'state', 'idestado', $statusValues);
+
+    }
+
+      /**
+     *
+     * @param string $viewName
+     */
+     protected function createViewsHistorialPrecios(string $viewName = 'ListHistorialPrecios')
+     {
+        $this->addListView($viewName, 'LogVariantePrecio', 'Historial de precios', 'fas fa-dollar-sign');  
+
+        $this->views[$viewName]->addOrderBy(['fecha'], 'fecha',2);
+
+        $this->setSettings($viewName, 'clickable', false);
+         $this->setSettings($viewName, 'btnNew', false);
+         $this->setSettings($viewName, 'btnDelete', false);
 
     }
 
@@ -273,6 +290,15 @@ class EditProducto extends EditController
                 new DataBaseWhere('referencia', $this->getViewModelValue('EditProducto', 'referencia'), '=', 'OR')
             ];
             $view->loadData('', $where2, [], 0, \FS_ITEM_LIMIT, "INNER JOIN pedidosprov on pedidosprov.idpedido = lineaspedidosprov.idpedido",'lineaspedidosprov.*, pedidosprov.idestado as idestado');
+            break;
+            case 'ListHistorialPrecios':
+            $where2 = [
+                new DataBaseWhere('idproducto', $idproducto),
+                new DataBaseWhere('referencia', $this->getViewModelValue('EditProducto', 'referencia'), '=', 'OR')
+            ];
+            $view->loadData('', $where2, [], 0, \FS_ITEM_LIMIT);
+            $view->totalAmounts = [];
+
             break;
         }
     }

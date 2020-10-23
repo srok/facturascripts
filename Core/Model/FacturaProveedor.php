@@ -105,28 +105,43 @@ class FacturaProveedor extends Base\PurchaseDocument
      *
      * @return bool
      */
-    public function test()
-    {
-        
+     public function test()
+     {
+
+      //  mpr( $this );
+
          if($this->idestado == 22){ //La factura aprobada requiere que se haya cargado el punto de venta y el nro
             if(  !$this->codpv ){
-                  die('El punto de venta es obligatorio');
-                    
-                  return false;
+              die('El punto de venta es obligatorio');
 
-            }
-             if(  !$this->numproveedor ){
-                  die('El número de factura es obligatorio');
+              return false;
 
-                  return false;
+          }
+          if(  !$this->numproveedor ){
+              die('El número de factura es obligatorio');
 
-            }
-        }
-        if($this->idestado == 21 && $this->previousData['idestado']!=21){ //En factura nueva codpv y numproveedor no corresponde.
+              return false;
+
+          }
+      }
+       /* if($this->idestado == 21 && $this->previousData['idestado']!=21){ //En factura nueva codpv y numproveedor no corresponde.
             $this->codpv=null;
             $this->numproveedor=null;
            
-        }
+        }*/
         return parent::test();
     }
-}
+
+
+       /**
+     * Saves data in the database.
+     * 
+     * @return bool
+     */
+       public function save()
+       {
+
+         return parent::save();
+     }
+
+ }
