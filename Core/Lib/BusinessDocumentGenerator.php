@@ -36,7 +36,14 @@ class BusinessDocumentGenerator
      *
      * @var array
      */
-    public $excludeFields = [
+    public $excludeFieldsPurchase = [
+        'codejercicio', 'codigo', 'codigorect', 'fecha', 'femail', 'hora',
+        'idasiento', 'idestado', 'idfacturarect', 'neto', 'netosindto',
+        'numero', 'pagada', 'total', 'totalirpf', 'totaliva', 'totalrecargo',
+        'totalsuplidos','codpv','numproveedor'
+    ];
+
+    public $excludeFieldsSales = [
         'codejercicio', 'codigo', 'codigorect', 'fecha', 'femail', 'hora',
         'idasiento', 'idestado', 'idfacturarect', 'neto', 'netosindto',
         'numero', 'pagada', 'total', 'totalirpf', 'totaliva', 'totalrecargo',
@@ -48,7 +55,8 @@ class BusinessDocumentGenerator
      *
      * @var array
      */
-    public $excludeLineFields = ['idlinea', 'orden', 'servido'];
+    public $excludeLineFieldsPurchase = ['idlinea', 'orden', 'servido'];
+    public $excludeLineFieldsSales = ['idlinea', 'orden', 'servido'];
 
     /**
      *
@@ -75,6 +83,12 @@ class BusinessDocumentGenerator
      */
     public function generate(BusinessDocument $prototype, string $newClass, $lines = [], $quantity = [], $properties = [])
     {
+        if( $prototype->getType() == SALE_DOCUMENT_TYPE ){
+            $this->excludeFields = $this->excludeFieldsSales;    
+        }else if($prototype->getType == PURCHASE_DOCUMENT_TYPE ){
+            $this->excludeFields = $this->excludeFieldsPurchase;    
+        }
+        
         // Add primary column to exclude fields
         $this->excludeFields[] = $prototype->primaryColumn();
 
@@ -148,6 +162,14 @@ class BusinessDocumentGenerator
      */
     protected function cloneLines(BusinessDocument $prototype, BusinessDocument $newDoc, $lines, $quantity)
     {
+
+        if( $prototype->getType() == SALE_DOCUMENT_TYPE ){
+            $this->excludeLineFields = $this->excludeLineFieldsSales;    
+        }else if($prototype->getType == PURCHASE_DOCUMENT_TYPE ){
+
+            $this->excludeLineFields = $this->excludeLineFieldsPurchase;    
+        }
+
         $docTrans = new DocTransformation();
         foreach ($lines as $line) {
             /// copy line properties to new line

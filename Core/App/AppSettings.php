@@ -85,13 +85,17 @@ class AppSettings
         $this->reload();
 
         /// Constants
+        
+        define(  'SALE_DOCUMENT_TYPE','sale_document');
+        define(  'PURCHASE_DOCUMENT_TYPE','purchase_document');
+        
         $constants = [
             'FS_CODPAIS' => ['property' => 'codpais', 'default' => 'ESP'],
             'FS_NF0' => ['property' => 'decimals', 'default' => 2],
             'FS_NF1' => ['property' => 'decimal_separator', 'default' => ','],
             'FS_NF2' => ['property' => 'thousands_separator', 'default' => ' '],
             'FS_CURRENCY_POS' => ['property' => 'currency_position', 'default' => 'right'],
-            'FS_ITEM_LIMIT' => ['property' => 'item_limit', 'default' => 50],
+            'FS_ITEM_LIMIT' => ['property' => 'item_limit', 'default' => 50]
         ];
         $this->setConstants($constants);
 

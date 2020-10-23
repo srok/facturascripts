@@ -120,7 +120,7 @@ class AppRouter
         }
 
         /// Allowed folder?
-        $allowedFolders = ['node_modules', 'vendor', 'Dinamic', 'Core', 'Plugins', 'MyFiles/Public'];
+        $allowedFolders = ['node_modules', 'vendor', 'Dinamic', 'Core', 'Plugins', 'MyFiles'];
         foreach ($allowedFolders as $folder) {
             if ('/' . $folder === \substr($uri, 0, 1 + \strlen($folder))) {
                 \header('Content-Type: ' . $this->getMime($filePath));
