@@ -144,4 +144,20 @@ class WidgetFile extends BaseWidget
 
         return $html;
     }
+
+      /**
+     * 
+     * @return string
+     */
+    protected function show()
+    {
+        if (null === $this->value) {
+            return '-';
+        }
+
+        $fileName = array_reverse(explode(DIRECTORY_SEPARATOR,$this->value))[0];
+
+
+        return '<a href="' . 'MyFiles' . DIRECTORY_SEPARATOR . $this->value . '" download="' . $fileName . '">' .  $fileName . '</a>';
+    }
 }

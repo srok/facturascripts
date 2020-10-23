@@ -8,7 +8,7 @@
             </column>
 
             <column name="full-path" numcolumns="8" order="110">
-                <widget type="file" fieldname="path"  required="true"  />
+                <widget type="file" fieldname="file"  required="true"  />
             </column>
         </group>
         <group numcolumns="4">

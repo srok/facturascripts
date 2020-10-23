@@ -7,7 +7,7 @@
                 </widget>
             </column>
             <column name="full-path" numcolumns="8" order="110">
-                <widget type="file" fieldname="path" required="true" readonly="true" />
+                <widget type="file" fieldname="file" required="true" readonly="false" />
             </column>
             <column name="aplicar_costo"  order="210">
                 <widget type="checkbox" fieldname="aplicar_costo" />

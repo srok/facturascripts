@@ -117,9 +117,27 @@ class EditCsvBulk extends PanelController
       }
     }
 
-    protected function importPreciosBulkAction(){
-      $uploadFile = $this->request->files->get('path');
+    protected function saveFile( &$uploadFile ){
+      $import_base_path = \FS_FOLDER . DIRECTORY_SEPARATOR . 'MyFiles' . DIRECTORY_SEPARATOR . 'imports' ;
+      //ver si existe carpeta 
+      //si no existe crearla
       
+      if(!is_dir( $import_base_path . DIRECTORY_SEPARATOR . date( 'Y' ))){
+        mkdir( $import_base_path . DIRECTORY_SEPARATOR . date( 'Y' ) );
+      }
+
+      if(!is_dir( $import_base_path . DIRECTORY_SEPARATOR . date( 'Y' ) . DIRECTORY_SEPARATOR . date( 'm' ))){
+        mkdir( $import_base_path . DIRECTORY_SEPARATOR . date( 'Y' ) . DIRECTORY_SEPARATOR . date( 'm' ) );
+      }
+
+      $rnd = rand( 0,999999 ) . '_';
+      $uploadFile = $uploadFile->move($import_base_path . DIRECTORY_SEPARATOR . date( 'Y' ) . DIRECTORY_SEPARATOR . date( 'm' ) , $rnd . $uploadFile->getClientOriginalName());
+   
+    }
+
+    protected function importPreciosBulkAction(){
+      $uploadFile = $this->request->files->get('file');
+      $this->saveFile( $uploadFile );
       $idprov = (int) $this->request->request->get('codproveedor');
 
        if( !$idprov ){
@@ -174,6 +192,8 @@ class EditCsvBulk extends PanelController
      }
      $bulklog = $this->request->request->all();
      $bulklog['fecha'] = date( 'Y-m-d H:i:s' );
+     $bulklog['file'] = 'imports' . DIRECTORY_SEPARATOR . date( 'Y' ) . DIRECTORY_SEPARATOR . date( 'm' ). DIRECTORY_SEPARATOR . $uploadFile->getFilename();
+
      $this->views['EditCsvBulk']->model->loadFromData(  $bulklog );
      $this->views['EditCsvBulk']->model->save(  );
         
