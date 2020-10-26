@@ -151,6 +151,12 @@ class WidgetFile extends BaseWidget
      */
     protected function show()
     {
+        
+        if( $this->readonly !== 'false' ){
+            return parent::show(  );
+        }
+
+
         if (null === $this->value) {
             return '-';
         }
