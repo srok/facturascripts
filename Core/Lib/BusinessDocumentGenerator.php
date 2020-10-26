@@ -85,7 +85,7 @@ class BusinessDocumentGenerator
     {
         if( $prototype->getType() == SALE_DOCUMENT_TYPE ){
             $this->excludeFields = $this->excludeFieldsSales;    
-        }else if($prototype->getType == PURCHASE_DOCUMENT_TYPE ){
+        }else if($prototype->getType(  ) == PURCHASE_DOCUMENT_TYPE ){
             $this->excludeFields = $this->excludeFieldsPurchase;    
         }
         
@@ -165,7 +165,7 @@ class BusinessDocumentGenerator
 
         if( $prototype->getType() == SALE_DOCUMENT_TYPE ){
             $this->excludeLineFields = $this->excludeLineFieldsSales;    
-        }else if($prototype->getType == PURCHASE_DOCUMENT_TYPE ){
+        }else if($prototype->getType(  ) == PURCHASE_DOCUMENT_TYPE ){
 
             $this->excludeLineFields = $this->excludeLineFieldsPurchase;    
         }

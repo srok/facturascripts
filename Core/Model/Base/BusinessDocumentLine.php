@@ -350,6 +350,7 @@ abstract class BusinessDocumentLine extends ModelOnChangeClass
      */
     private function applyStockChanges(&$stock, int $mode, float $quantity, float $served)
     {
+       // mpr( func_get_args() );
         if ($quantity < 0 && $served < $quantity) {
             $served = $quantity;
         }
@@ -419,6 +420,9 @@ abstract class BusinessDocumentLine extends ModelOnChangeClass
         $more = ['actualizastock', 'cantidad', 'servido'];
         parent::setPreviousData(\array_merge($more, $fields));
 
+        // echo get_class( $this );
+        // mpr( $this->previousData );
+
         if (null === $this->previousData['actualizastock']) {
             $this->previousData['actualizastock'] = 0;
         }
@@ -455,6 +459,7 @@ abstract class BusinessDocumentLine extends ModelOnChangeClass
         /// find the stock
         $stock = new Stock();
         $doc = $this->getDocument();
+        //echo get_class($doc);
         $where2 = [
             new DataBaseWhere('codalmacen', $doc->codalmacen),
             new DataBaseWhere('referencia', $this->referencia)
