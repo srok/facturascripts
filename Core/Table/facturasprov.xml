@@ -217,6 +217,6 @@
     </constraint>
     <constraint>
         <name>uniq_codigo_facturasprov</name>
-        <type>UNIQUE (codigo,idempresa)</type>
+        <type>UNIQUE (codigo,idempresa,codproveedor)</type>
     </constraint>
 </table>

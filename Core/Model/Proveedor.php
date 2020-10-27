@@ -21,6 +21,7 @@ namespace FacturaScripts\Core\Model;
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Dinamic\Model\CuentaBancoProveedor as DinCuentaBancoProveedor;
 use FacturaScripts\Dinamic\Model\Contacto as DinContacto;
+use FacturaScripts\Plugins\Afip\Lib\RegimenIVA;
 
 /**
  * A supplier. It can be related to several addresses or sub-accounts.
@@ -162,6 +163,15 @@ class Proveedor extends Base\ComercialContact
         }
 
         return parent::test();
+    }
+
+    public function save(){
+        $idempresa = $this->toolBox()->appSettings()->get('default','idempresa');
+        $empresa = CodeModel::get('empresas','idempresa',$idempresa ,'regimeniva');
+        $regimenDefault = $empresa->description;
+        $this->codserie = RegimenIVA::defaultSerie($regimenDefault,$this->regimeniva);
+
+        return parent::save();
     }
 
     /**

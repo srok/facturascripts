@@ -50,9 +50,9 @@ class RegimenIVA extends Iva
     public static function all()
     {
         return [
-            self::TAX_SYSTEM_EXEMPT => 'Exento',
+            /*self::TAX_SYSTEM_EXEMPT => 'Exento',
             self::TAX_SYSTEM_GENERAL => 'General',
-            self::TAX_SYSTEM_SURCHARGE => 'Recargo de equivalencia',
+            self::TAX_SYSTEM_SURCHARGE => 'Recargo de equivalencia',*/
             
             self::TAX_SYSTEM_RI =>'IVA Responsable Inscripto' ,
             self::TAX_SYSTEM_NR =>'IVA no Responsable' ,
@@ -77,8 +77,8 @@ class RegimenIVA extends Iva
      */
     public static function defaultSerie($vendedor, $cliente)
     {
-        if ($vendedor == self::TAX_SYSTEM_GENERAL){
-            if ($cliente == self::TAX_SYSTEM_GENERAL) {
+        if ($vendedor == self::TAX_SYSTEM_RI){
+            if ($cliente == self::TAX_SYSTEM_RI) {
                 return 'A';
             }
             return 'B';
