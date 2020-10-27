@@ -266,6 +266,7 @@ trait InvoiceTrait
                 }
             /// no break
             case 'fecha':
+            case 'editable':
             case 'total':
                 return $this->onChangeTotal();
         }
