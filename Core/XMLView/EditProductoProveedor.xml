@@ -22,7 +22,10 @@
 <view>
     <columns>
         <group name="data" numcolumns="12">
-             <column name="price" order="140">
+             <column name="refproveedor" order="130">
+                <widget type="text" fieldname="refproveedor" />
+            </column>
+            <column name="price" order="140">
                 <widget type="money" fieldname="precio" />
             </column>
             <column name="dto"  order="150">
