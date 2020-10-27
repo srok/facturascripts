@@ -93,7 +93,9 @@ class EditProducto extends EditController
      */
      protected function createViewsLineasFacturas(string $viewName = 'ListLineaFacturaProveedor')
      {
+
         $this->addListView($viewName, 'LineaFacturaProveedor', 'Historial de compras', 'fas fa-list');   
+        $this->views[$viewName]->addOrderBy(['idlinea'], 'code', 2);
     }
 
      /**
