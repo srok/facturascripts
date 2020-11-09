@@ -40,6 +40,16 @@
             <column name="aplicar_costo"  order="210">
                 <widget type="checkbox" fieldname="aplicar_costo" />
             </column>
+              <column name="aplicar_utilidad"  order="210">
+                <widget type="checkbox" fieldname="aplicar_utilidad" />
+            </column>
+             <column name="aplicar_flete"  order="210">
+                <widget type="checkbox" fieldname="aplicar_flete" />
+            </column>
+             <column name="aplicar_descuentos"  order="210">
+                <widget type="checkbox" fieldname="aplicar_descuentos" />
+            </column>
+           
               <column name="update-time" display="right" order="300">
                 <widget type="datetime" fieldname="fecha" />
             </column>

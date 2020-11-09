@@ -38,8 +38,8 @@ abstract class PurchaseDocumentController extends PurchaseDocumentControllerCore
      *
      * @return bool
      */
-    protected function saveDocumentAction()
-    {
+     protected function saveDocumentAction()
+     {
         $this->setTemplate(false);
         if (!$this->permissions->allowUpdate) {
             $this->response->setContent($this->toolBox()->i18n()->trans('not-allowed-modify'));
@@ -58,10 +58,18 @@ abstract class PurchaseDocumentController extends PurchaseDocumentControllerCore
         $this->views[$this->active]->loadFromData($data['form']);
         $this->views[$this->active]->lines = $this->views[$this->active]->model->getLines();
 
+         //no lines?
+
+
+        if( count( $data['lines'] ) < 1){
+            $this->response->setContent($this->toolBox()->i18n()->trans('no-lines'));
+            return false;
+        }
+
 
         //load extrainfo for code change if altpattern is enabled
 
-        $data = $this->getBusinessFormData();
+        //$data = $this->getBusinessFormData();
 
         $newEstado = $this->request->request->get('idestado'); 
 
@@ -73,14 +81,14 @@ abstract class PurchaseDocumentController extends PurchaseDocumentControllerCore
 
           BusinessDocumentCode::getNewCode($this->views[$this->active]->model,false,true);
 
-        }
+      }
 
         /// save
-        $result = $this->saveDocumentResult($this->views[$this->active], $data);
-        $this->response->setContent($result);
+      $result = $this->saveDocumentResult($this->views[$this->active], $data);
+      $this->response->setContent($result);
 
         // Event finish
-        $this->views[$this->active]->model->pipe('finish');
-        return false;
-    }
+      $this->views[$this->active]->model->pipe('finish');
+      return false;
+  }
 }

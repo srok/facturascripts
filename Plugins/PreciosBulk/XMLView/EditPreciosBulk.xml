@@ -12,38 +12,54 @@
                 </widget>
             </column>
         </group>
-        <group name="data" numcolumns="12">
-            <column name="precio" order="140">
+       
+        <group name="precio_compra" numcolumns="12" valign="bottom" title="Precio de compra">
+            <column name="precio" numcolumns="3" order="140" description="Porcentaje sobre el precio base actual">
                 <widget type="percentage" fieldname="precio" />
             </column>
-            <column name="dto"  order="150">
+            <column name="flete" numcolumns="3"  order="190" description="Remplaza el porcentaje anterior">
+                <widget type="percentage" fieldname="flete" />
+            </column>
+             <column name="aplicar_flete" numcolumns="3"  order="210" description="Remplaza el porcentaje anterior">
+                <widget type="checkbox" fieldname="aplicar_flete" />
+            </column>
+           
+        </group>
+         <group name="data" valign="bottom" title="Descuentos" numcolumns="12">
+           <column name="aplicar_descuentos"  order="210" description="Remplaza todos los porcentajes">
+                <widget type="checkbox" fieldname="aplicar_descuentos" />
+            </column>
+            <column name="dto"  order="210">
                 <widget type="percentage" fieldname="dtopor" />
             </column>
-            <column name="dto-2"  order="160">
+            <column name="dto-2"  order="210">
                 <widget type="percentage" fieldname="dtopor2" />
             </column>
-            <column name="dto-3"  order="160">
+            <column name="dto-3"  order="210">
                 <widget type="percentage" fieldname="dtopor3" />
             </column>
-            <column name="dto-4"  order="170">
+            <column name="dto-4"  order="210">
                 <widget type="percentage" fieldname="dtopor4" />
             </column>
-            <column name="dto-5"  order="180">
+            <column name="dto-5"  order="210">
                 <widget type="percentage" fieldname="dtopor5" />
             </column>
         </group>
-        <group numcolumns="4">
-            <column name="flete"  order="190">
-                <widget type="percentage" fieldname="flete" />
-            </column>
-            <column name="utilidad"  order="200">
+         <group name="precio_venta" numcolumns="12" valign="bottom" title="Precio de venta">
+              <column name="utilidad" numcolumns="3" order="200" description="Remplaza el porcentaje anterior">
                 <widget type="percentage" fieldname="utilidad" />
             </column>
-            <column name="aplicar_costo"  order="210">
+            <column name="aplicar_utilidad" numcolumns="3"  order="210" description="Modifica precio de venta al público">
+                <widget type="checkbox" fieldname="aplicar_utilidad"  />
+            </column>
+            <column name="aplicar_costo" numcolumns="3"  order="210" description="Modifica precio de venta al público">
                 <widget type="checkbox" fieldname="aplicar_costo" />
             </column>
+        
+           
         </group>
-
+          
+        
     </columns>
     <rows>
 

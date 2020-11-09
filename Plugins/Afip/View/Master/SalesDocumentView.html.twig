@@ -20,6 +20,9 @@
 {% set thisView = fsc.getCurrentView() %}
 
 <script type="text/javascript">
+    
+    businessDocType = 'sales';
+    
     businessDocViewLineData = {{ thisView.getLineData() | raw }};
     businessDocViewFormName = "form{{ thisView.getViewName() }}";
     businessDocViewUrl = "{{ thisView.model.url('edit') | raw }}";
@@ -48,7 +51,6 @@
         return false;
     }
 </script>
-SALES!
 <form id="form{{ thisView.getViewName() }}" action="#" method="post">
     <input type="hidden" name="action"/>
     <input type="hidden" name="activetab" value="{{ thisView.getViewName() }}"/>
@@ -114,7 +116,7 @@ SALES!
                 {{ _self.childrenDocuments(thisView.model.childrenDocuments(), fsc, i18n) }}
             </div>
         {% endif %}
-        <div id="document-lines"></div>
+        <div id="document-lines" tabindex="0"></div>
         <div class="form-row mt-2">
             {% if fsc.showDocSubType %}
                 {{ _self.customSelect('doc_codsubtipodoc', 'codsubtipodoc', thisView.model.codsubtipodoc,

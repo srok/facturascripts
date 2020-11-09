@@ -116,7 +116,7 @@ class EditPreciosBulk extends PanelController
     }
 
     protected function updatePreciosBulkAction(){
-
+      
       $idprov = (int) $this->request->request->get('codproveedor');
       $codfamilia = (int) $this->request->request->get('codfamilia');
 
@@ -133,43 +133,79 @@ class EditPreciosBulk extends PanelController
         $and_familia = "AND productos.codfamilia = $codfamilia";
       }
 
+      $aplicar_flete = ( bool ) $this->request->request->get('aplicar_flete') ?? false;
+      $aplicar_descuentos = ( bool ) $this->request->request->get('aplicar_descuentos') ?? false;
+      $aplicar_utilidad = ( bool ) $this->request->request->get('aplicar_utilidad') ?? false;
+      $aplicar_costo = ( bool ) $this->request->request->get('aplicar_costo') ?? false;
+
       $precio = (float) $this->request->request->get('precio') ?? 0;
+
+      if( $aplicar_flete ){
+           $fletepor = (float) $this->request->request->get('flete') ?? 0;
+      }
+
+       if( $aplicar_descuentos ){
       $dtopor = (float) $this->request->request->get('dtopor') ?? 0;
       $dtopor2 = (float) $this->request->request->get('dtopor2') ?? 0;
       $dtopor3 = (float) $this->request->request->get('dtopor3') ?? 0;
       $dtopor4 = (float) $this->request->request->get('dtopor4') ?? 0;
       $dtopor5 = (float) $this->request->request->get('dtopor5') ?? 0;
-      $fletepor = (float) $this->request->request->get('flete') ?? 0;
-      $utilidad = (float) $this->request->request->get('utilidad') ?? 0;
-      $precioporc = (float) 1 + ($precio / 100);
       $dre = (float) 1 - ( ( 1 - $dtopor / 100 ) * ( 1 - $dtopor2 / 100 ) * ( 1 - $dtopor3 / 100 ) * ( 1 - $dtopor4 / 100 ) * ( 1 - $dtopor5 / 100 ) );
-      $margenporc = (float) 1 + ($utilidad / 100);
+      }
 
+      $precioporc = (float) 1 + ($precio / 100);
+      
+   
 
-      if( $this->request->request->get('aplicar_costo') ){
-       $update_producto = ",variantes.coste = productosprov.neto,
-       variantes.margen = $utilidad,
-       variantes.precio = ROUND(productosprov.neto * $margenporc, 2),
-       productos.precio = variantes.precio";
+      if( $aplicar_costo ){
+           $update_producto = ",variantes.coste = productosprov.neto,";
+           
+           if( $aplicar_utilidad ){
+               $utilidad = (float) $this->request->request->get('utilidad') ?? 0;
+              $update_producto .= "variantes.margen = $utilidad,";
+           }
+
+           $update_producto .="variantes.precio = ROUND(
+           
+           ( ROUND((productosprov.precio ) - (productosprov.precio  * 
+     
+     (1 - ( ( 1 - productosprov.dtopor / 100 ) * ( 1 - productosprov.dtopor2 / 100 ) * ( 1 - productosprov.dtopor3 / 100 ) * ( 1 - productosprov.dtopor4 / 100 ) * ( 1 - productosprov.dtopor5 / 100 ) ))
+
+     ), 2) )
+
+            * (1 + (variantes.margen / 100)) , 2),
+           productos.precio = variantes.precio";
      }
 
      $sql = "UPDATE productosprov 
      INNER JOIN productos ON productosprov.idproducto = productos.idproducto $and_familia
      INNER JOIN variantes ON variantes.idproducto = productos.idproducto
      SET 
-     productosprov.actualizado = NOW(),
+     productosprov.actualizado = NOW(),";
+
+     if( $aplicar_descuentos ){
+     $sql .= "
      productosprov.dtopor = $dtopor,
      productosprov.dtopor2 = $dtopor2,
      productosprov.dtopor3 = $dtopor3,
      productosprov.dtopor4 = $dtopor4,
      productosprov.dtopor5 = $dtopor5,
-     productosprov.fletepor = $fletepor,
-     productosprov.precio = ROUND(productosprov.precio * $precioporc, 2),
-     productosprov.neto = ROUND((productosprov.precio ) - (productosprov.precio  * $dre), 2)
+     ";
+     }
+
+     if( $aplicar_flete ){
+     $sql .= "productosprov.fletepor = $fletepor,";
+     }
+
+     $sql .= "productosprov.precio = ROUND(productosprov.precio * $precioporc, 2),
+     productosprov.neto = ROUND((productosprov.precio ) - (productosprov.precio  * 
+     
+     (1 - ( ( 1 - productosprov.dtopor / 100 ) * ( 1 - productosprov.dtopor2 / 100 ) * ( 1 - productosprov.dtopor3 / 100 ) * ( 1 - productosprov.dtopor4 / 100 ) * ( 1 - productosprov.dtopor5 / 100 ) ))
+
+     ), 2)
      $update_producto
      WHERE productosprov.codproveedor = $idprov
      ";
-
      $database = new DataBase(  );
      if($database->exec( $sql )){
        $this->toolBox()->i18nLog()->notice('price-update-complete');              

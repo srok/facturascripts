@@ -16,13 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var businessDocViewAutocompleteColumns = [];
-var businessDocViewLineData = [];
-var businessDocViewFormName = "f_document_primary";
-var businessDocViewUrl = "";
-var hsTable = null;
+ var businessDocViewAutocompleteColumns = [];
+ var businessDocViewLineData = [];
+ var businessDocViewFormName = "f_document_primary";
+ var businessDocViewUrl = "";
+ var hsTable = null;
 
-function beforeChange(changes, source) {
+ function beforeChange(changes, source) {
     // Check if the value has changed. Not Multiselection
     if (changes !== null && changes[0][2] !== changes[0][3]) {
         for (var i = 0; i < businessDocViewAutocompleteColumns.length; i++) {
@@ -67,21 +67,27 @@ function businessDocViewSubjectChanged() {
              * Review the doc_codsubtipodoc existence, 
              * if it exist we put the value from the customer data
              */
-            if($("#doc_codsubtipodoc").length !== 0) {
+             if($("#doc_codsubtipodoc").length !== 0) {
                 $("#doc_codsubtipodoc").val(results.codsubtipodoc);
             }
             /**
              * Review the doc_codopersaciondoc existence, 
              * if it exist we put the value from the customer data
              */
-            if($("#doc_codoperaciondoc").length !== 0) {
+             if($("#doc_codoperaciondoc").length !== 0) {
                 $("#doc_codoperaciondoc").val(results.codoperaciondoc);
             }
             
 
-            businessDocViewRecalculate();
-        },
-        error: function (xhr, status, error) {
+             /**
+             * Limpiar la tabla luego de cambiar de proveedor
+             */
+
+             if(businessDocType == 'purchase'){
+                 clearTable();
+             }
+         },
+         error: function (xhr, status, error) {
             alert(xhr.responseText);
         }
     });
@@ -229,6 +235,11 @@ function randomString(length) {
 
 $(document).ready(function () {
     var container = document.getElementById("document-lines");
+
+    $('#document-lines').on('focus',function(){
+        hsTable.selectCell(0,0);
+    });
+
     hsTable = new Handsontable(container, {
         data: businessDocViewLineData.rows,
         columns: businessDocViewSetAutocompletes(businessDocViewLineData.columns),
@@ -310,3 +321,20 @@ $(document).ready(function () {
         });
     });
 });
+
+function clearTable(){
+    var numRows = hsTable.countRows();
+    for(let i = 0; i < numRows; i++){
+        businessDocViewLineData.rows[i] = {};
+    }
+
+    $("#doc_neto").val(0);
+    $("#doc_netosindto").val(0);
+    $("#doc_total").val(0);
+    $("#doc_total2").val(0);
+    $("#doc_totaliva").val(0);
+    $("#doc_totalrecargo").val(0);
+    $("#doc_totalirpf").val(0);
+    
+    hsTable.render();
+}

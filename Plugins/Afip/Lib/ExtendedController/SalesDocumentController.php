@@ -57,64 +57,68 @@ abstract class SalesDocumentController extends SalesDocumentControllerCore
     }
 
 // duplicated request?
-/*if ($this->multiRequestProtection->tokenExist($this->request->request->get('multireqtoken', ''))) {
-$this->response->setContent($this->toolBox()->i18n()->trans('duplicated-request'));
-return false;
-}*/
+    if ($this->multiRequestProtection->tokenExist($this->request->request->get('multireqtoken', ''))) {
+      $this->response->setContent($this->toolBox()->i18n()->trans('duplicated-request'));
+      return false;
+    }
 
 /// loads model
-$data = $this->getBusinessFormData();
-$this->views[$this->active]->model->setAuthor($this->user);
-$this->views[$this->active]->loadFromData($data['form']);
-$this->views[$this->active]->lines = $this->views[$this->active]->model->getLines();
+    $data = $this->getBusinessFormData();
+    $this->views[$this->active]->model->setAuthor($this->user);
+    $this->views[$this->active]->loadFromData($data['form']);
+    $this->views[$this->active]->lines = $this->views[$this->active]->model->getLines();
 
+    if( count( $data['lines'] ) < 1){
+      $this->response->setContent($this->toolBox()->i18n()->trans('no-lines'));
+      return false;
+    }
 
 //load extrainfo for code change if altpattern is enabled
 
-$data = $this->getBusinessFormData();
+//$data = $this->getBusinessFormData();
 
-$newEstado = $this->request->request->get('idestado'); 
+    $newEstado = $this->request->request->get('idestado'); 
 
-$estadoDocumento = new EstadoDocumento();
+    $estadoDocumento = new EstadoDocumento();
 
-$estadoDocumento->loadFromCode($newEstado);
+    $estadoDocumento->loadFromCode($newEstado);
 
-if($estadoDocumento->altpattern){
+    if($estadoDocumento->altpattern){
 
-  $this->getInvoiceNumber($this->views[$this->active]->model,$data);
+      $this->getInvoiceNumber($this->views[$this->active]->model,$data);
 
-  BusinessDocumentCode::getNewCode($this->views[$this->active]->model,false,true);
+      BusinessDocumentCode::getNewCode($this->views[$this->active]->model,false,true);
 
-}
+    }
 
 
 /// save
-$result = $this->saveDocumentResult($this->views[$this->active], $data);
-$this->response->setContent($result);
+    $result = $this->saveDocumentResult($this->views[$this->active], $data);
+    $this->response->setContent($result);
 
 // Event finish
-$this->views[$this->active]->model->pipe('finish');
-return false;
-}
-
-protected function checkNumero2Valid($nro2, $pv, $serie){
-
-  if(!$nro2){
-    die("numero2-empty");
+    $this->views[$this->active]->model->pipe('finish');
+    return false;
   }
 
-  $where = [new DataBaseWhere('codpv', $pv),
-  new DataBaseWhere('numero2', $nro2),
-  new DataBaseWhere('codserie', $serie)
-];
+  protected function checkNumero2Valid($nro2, $pv, $serie){
 
-$document = $this->views[$this->active]->model->all($where);
+    if(!$nro2){
+      die("numero2-empty");
+    }
 
-if($document){
-  die("numero2-duplicated");
-}
+    $where = [new DataBaseWhere('codpv', $pv),
+    new DataBaseWhere('numero2', $nro2),
+    new DataBaseWhere('codserie', $serie)
+  ];
 
-return true;
+  $document = $this->views[$this->active]->model->all($where);
+
+  if($document){
+    die("numero2-duplicated");
+  }
+
+  return true;
 }
 
 

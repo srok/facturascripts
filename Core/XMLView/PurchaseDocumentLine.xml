@@ -46,16 +46,16 @@
         <column name="percentage-discount" display="right" order="150">
             <widget type="number" fieldname="dtopor"/>
         </column>
-        <column name="dto-2" display="none" order="160">
+        <column name="dto-2" display="right" order="160">
             <widget type="number" fieldname="dtopor2"/>
         </column>
-         <column name="dto-3" display="none" order="161">
+         <column name="dto-3" display="right" order="161">
             <widget type="number" fieldname="dtopor3"/>
         </column>
-         <column name="dto-4" display="none" order="162">
+         <column name="dto-4" display="right" order="162">
             <widget type="number" fieldname="dtopor4"/>
         </column>
-         <column name="dto-5" display="none" order="163">
+         <column name="dto-5" display="right" order="163">
             <widget type="number" fieldname="dtopor5"/>
         </column>
         <column name="net" display="right" order="170">
