@@ -38,10 +38,10 @@
                 <widget type="number" decimal="0" fieldname="codiso" icon="fas fa-flag" />
             </column>
             <column name="sales-rate" description="conversion-rate" numcolumns="4" order="110">
-                <widget type="number" decimal="0" fieldname="tasaconv" icon="fas fa-euro-sign" />
+                <widget type="number" decimal="0" fieldname="tasaconv" icon="fas fa-dollar-sign" />
             </column>
             <column name="purchase-rate" description="conversion-rate" numcolumns="4" order="120">
-                <widget type="number" decimal="0" fieldname="tasaconvcompra" icon="fas fa-euro-sign" />
+                <widget type="number" decimal="0" fieldname="tasaconvcompra" icon="fas fa-dollar-sign" />
             </column>
         </group>
     </columns>

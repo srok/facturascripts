@@ -3,7 +3,8 @@
 /Cache/
 /Dinamic/
 /doc/
-/MyFiles/
+/MyFiles/*
+!/MyFiles/demo_proveedores_bulk.csv
 /nbproject/
 /node_modules/
 #/Plugins/

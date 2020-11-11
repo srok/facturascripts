@@ -119,7 +119,7 @@ class EditFacturaProveedor extends PurchaseDocumentController
         parent::createViews();
         $this->createReceiptsView();
         $this->createAccountsView();
-        $this->addHtmlView('Refund', 'Tab/RefundFacturaProveedor', 'FacturaProveedor', 'refunds', 'fas fa-share-square');
+        // $this->addHtmlView('Refund', 'Tab/RefundFacturaProveedor', 'FacturaProveedor', 'refunds', 'fas fa-share-square');
     }
 
     /**

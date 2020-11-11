@@ -60,7 +60,7 @@ class EditCsvBulk extends PanelController
 
     protected function editPreciosView( $viewName = 'EditCsvBulk' ){
       $this->addEditView($viewName, 'CsvBulk', 'Actualizar precios');
-
+        $this->setSettings($viewName, 'btnNew', false);
       $this->setSettings($viewName, 'btnSave', false);
       $this->setSettings($viewName, 'btnUndo', false);
       $this->setSettings($viewName, 'btnDelete', false);

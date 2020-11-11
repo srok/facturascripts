@@ -7,7 +7,7 @@
                 </widget>
             </column>
 
-            <column name="full-path" numcolumns="8" order="110">
+            <column name="full-path" numcolumns="8" order="110" description="&#x3C;a href=&#x27;MyFiles/demo_proveedores_bulk.csv&#x27; download=&#x22;demo_proveedores_bulk.csv&#x22;&#x3E;Descargar un archivo CSV de ejemplo&#x3C;/a&#x3E;">
                 <widget type="file" fieldname="file"  required="true"  />
             </column>
         </group>
