@@ -36,6 +36,8 @@
                     <values title="supplier-order">PedidoProveedor</values>
                     <values title="supplier-delivery-note">AlbaranProveedor</values>
                     <values title="supplier-invoice">FacturaProveedor</values>
+                    <values title="supplier-notacredito">NotaCreditoProveedor</values>
+                    
                 </widget>
             </column>
             <column name="company" titleurl="ListEmpresa" numcolumns="3" order="120">

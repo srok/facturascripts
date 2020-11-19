@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Document   : notascreditocli.xml
+    Document   : notascreditoprov.xml
     Author     : Srok
     Description:
-        Structure for the notascreditocli table.
+        Structure for the notascreditoprov table.
 -->
 <table>
     <column>
         <name>apartado</name>
         <type>character varying(10)</type>
+    </column>
+    <column>
+        <name>cifnif</name>
+        <type>character varying(30)</type>
+        <null>NO</null>
     </column>
     <column>
         <name>cae</name>
@@ -17,11 +22,6 @@
     <column>
         <name>cai</name>
         <type>integer</type>
-    </column>
-    <column>
-        <name>cifnif</name>
-        <type>character varying(30)</type>
-        <null>NO</null>
     </column>
     <column>
         <name>ciudad</name>
@@ -36,7 +36,7 @@
         <type>character varying(4)</type>
     </column>
     <column>
-        <name>codcliente</name>
+        <name>codproveedor</name>
         <type>character varying(10)</type>
     </column>
     <column>
@@ -70,6 +70,10 @@
         <name>codpago</name>
         <type>character varying(10)</type>
         <null>NO</null>
+    </column>
+     <column>
+        <name>codpv</name>
+        <type>integer</type>
     </column>
     <column>
         <name>codpais</name>
@@ -172,7 +176,7 @@
         <type>character varying(50)</type>
     </column>
     <column>
-        <name>nombrecliente</name>
+        <name>nombre</name>
         <type>character varying(100)</type>
         <null>NO</null>
     </column>
@@ -182,7 +186,7 @@
         <null>NO</null>
     </column>
     <column>
-        <name>numero2</name>
+        <name>numproveedor</name>
         <type>character varying(50)</type>
     </column>
     <column>
@@ -233,51 +237,51 @@
         <default>0</default>
     </column>
     <constraint>
-        <name>notascreditocli_pkey</name>
+        <name>notascreditoprov_pkey</name>
         <type>PRIMARY KEY (idnotacredito)</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_almacenes</name>
+        <name>ca_notascreditoprov_almacenes</name>
         <type>FOREIGN KEY (codalmacen) REFERENCES almacenes (codalmacen) ON DELETE RESTRICT ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_asiento</name>
+        <name>ca_notascreditoprov_asiento</name>
         <type>FOREIGN KEY (idasiento) REFERENCES asientos (idasiento) ON DELETE SET NULL ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_clientes</name>
-        <type>FOREIGN KEY (codcliente) REFERENCES clientes (codcliente) ON DELETE RESTRICT ON UPDATE CASCADE</type>
+        <name>ca_notascreditoprov_proveedores</name>
+        <type>FOREIGN KEY (codproveedor) REFERENCES proveedores (codproveedor) ON DELETE RESTRICT ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_divisas</name>
+        <name>ca_notascreditoprov_divisas</name>
         <type>FOREIGN KEY (coddivisa) REFERENCES divisas (coddivisa) ON DELETE RESTRICT ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_ejercicios</name>
+        <name>ca_notascreditoprov_ejercicios</name>
         <type>FOREIGN KEY (codejercicio) REFERENCES ejercicios (codejercicio) ON DELETE RESTRICT ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_empresas</name>
+        <name>ca_notascreditoprov_empresas</name>
         <type>FOREIGN KEY (idempresa) REFERENCES empresas (idempresa) ON DELETE CASCADE ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_estados</name>
+        <name>ca_notascreditoprov_estados</name>
         <type>FOREIGN KEY (idestado) REFERENCES estados_documentos (idestado) ON DELETE RESTRICT ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_series</name>
+        <name>ca_notascreditoprov_series</name>
         <type>FOREIGN KEY (codserie) REFERENCES series (codserie) ON DELETE RESTRICT ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_users</name>
+        <name>ca_notascreditoprov_users</name>
         <type>FOREIGN KEY (nick) REFERENCES users (nick) ON DELETE SET NULL ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>ca_notascreditocli_liquidaciones</name>
+        <name>ca_notascreditoprov_liquidaciones</name>
         <type>FOREIGN KEY (idliquidacion) REFERENCES liquidacionescomisiones (idliquidacion) ON DELETE SET NULL ON UPDATE CASCADE</type>
     </constraint>
     <constraint>
-        <name>uniq_codigo_notascreditocli</name>
+        <name>uniq_codigo_notascreditoprov</name>
         <type>UNIQUE (codigo,idempresa)</type>
     </constraint>
 </table>

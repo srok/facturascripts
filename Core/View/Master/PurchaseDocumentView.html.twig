@@ -312,7 +312,7 @@ COMPRA!
                             </a>
                         {% else %}
                             <a class="dropdown-item" href="#" onclick="$('#doc_idestado').val('{{ status.idestado }}'); businessDocViewSave();">
-                                {% if status.generadoc %}
+                                {% if status.generadoc || status.generadoc2 %}
                                     {% set showDocumentStitcher = true %}
                                 {% endif %}
                                 <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}

@@ -5,7 +5,12 @@
     Description:
         Structure for the estados_documentos table.
 -->
+
 <table>
+     <column>
+        <name>generadoc2</name>
+        <type>character varying(30)</type>
+    </column>
     <column>
         <name>altpattern</name>
         <type>boolean</type>

@@ -167,7 +167,7 @@
                             {{ _self.customInput('doc_total2', 'total', thisView.model.total, 'text', '',
                             {class: 'form-control', disabled: ''}, i18n.trans('total')) }}
                         </div>
-                        {% if tipoDoc == 'FacturaProveedor' %}
+                        {% if tipoDoc in ['FacturaProveedor','NotaCreditoProveedor'] %}
                             <div class="form-row mb-2">
                                 {{ _self.customInput('cae', 'cae', thisView.model.cae, 'number', '',
                                 {class: 'form-control'}, i18n.trans('cae')) }}
@@ -302,159 +302,170 @@
                             </span>
                             <input type="hidden" id="{{ id }}Autocomplete" name="{{ name }}" value="{{ model.codproveedor }}"/>
                             {% set autofocus = model.codproveedor ? '' : 'autofocus=""' %}
-                            {% set disabled = model.codproveedor ? 'disabled=""' : ''  %}
-                                <input type="text" id="{{ id }}" value="{{ model.nombre | raw }}" class="form-control autocomplete-dc"
-                                data-field="{{ id }}" data-source="Proveedor" data-fieldcode="codproveedor" data-fieldtitle="nombre"
-                                placeholder="{{ i18n.trans('supplier') }}" {{ autofocus }} {{ disabled }} autocomplete="off"/>
-                            </div>
-                        </div>
-                    {% endmacro %}
-
-                    {% macro statusSelect(model, view, i18n) %}
-                        {% set status = model.getStatus() %}
-                            {% if model.exists() == false %}
-                            {% elseif status.generadoc %}
-                                <div class="col mb-2">
-                                    <button class="btn btn-block btn-secondary" type="button">
-                                        <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
-                                    </button>
+                                {% set disabled = model.codproveedor ? 'disabled=""' : ''  %}
+                                    <input type="text" id="{{ id }}" value="{{ model.nombre | raw }}" class="form-control autocomplete-dc"
+                                    data-field="{{ id }}" data-source="Proveedor" data-fieldcode="codproveedor" data-fieldtitle="nombre"
+                                    placeholder="{{ i18n.trans('supplier') }}" {{ autofocus }} {{ disabled }} autocomplete="off"/>
                                 </div>
-                            {% else %}
-                                <div class="col mb-2">
-                                    <div class="dropdown">
-                                        <button class="btn btn-block btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </div>
+                        {% endmacro %}
+
+                        {% macro statusSelect(model, view, i18n) %}
+                            {% set status = model.getStatus() %}
+                                {% if model.exists() == false %}
+                                {% elseif status.generadoc %}
+                                    <div class="col mb-2">
+                                        <button class="btn btn-block btn-secondary" type="button">
                                             <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            {% set showDocumentStitcher = false %}
-                                                {% for status in view.documentStatus %}
-                                                    {% if model.idestado == status.idestado %}
-                                                        <a class="dropdown-item active" href="#">
-                                                            <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
-                                                        </a>
-                                                    {% else %}
-                                                        <a class="dropdown-item" href="#" onclick="$('#doc_idestado').val('{{ status.idestado }}'); businessDocViewSave();">
-                                                            {% if status.generadoc %}
-                                                                {% set showDocumentStitcher = true %}
-                                                                {% endif %}
-                                                                <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
+                                    </div>
+                                {% else %}
+                                    <div class="col mb-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-block btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                {% set showDocumentStitcher = false %}
+
+
+                                                    {% for status in view.documentStatus %}
+                                                        {% if (status.generadoc) %}
+                                                            {% set showDocumentStitcher = true %}
+                                                            {% endif %}
+
+                                                            {% if model.idestado == status.idestado %}
+
+                                                                <a class="dropdown-item active" href="#">
+                                                                    <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
+                                                                </a>
+                                                            {% else %}
+                                                                <a class="dropdown-item" href="#" onclick="$('#doc_idestado').val('{{ status.idestado }}'); businessDocViewSave();">
+
+                                                                    <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
+                                                                </a>
+                                                            {% endif %}
+                                                        {% endfor %}
+
+                                                            {% if model.getStatus().generadoc2 %}
+                                                            {% set showDocumentStitcher = true %}
+                                                            {% endif %}
+
+                                                        {% if model.exists() and showDocumentStitcher %}
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item" href="DocumentStitcher?model={{ model.modelClassName() }}&codes={{ model.primaryColumnValue() }}">
+                                                                <i class="fas fa-magic fa-fw" aria-hidden="true"></i> 
+                                                                {{ i18n.trans(status.generadoc2) }}
                                                             </a>
                                                         {% endif %}
-                                                    {% endfor %}
-                                                    {% if model.exists() and showDocumentStitcher %}
-                                                        <div class="dropdown-divider"></div>
-                                                        <a class="dropdown-item" href="DocumentStitcher?model={{ model.modelClassName() }}&codes={{ model.primaryColumnValue() }}">
-                                                            <i class="fas fa-magic fa-fw" aria-hidden="true"></i> {{ i18n.trans('group-or-split') }}
-                                                        </a>
-                                                    {% endif %}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    {% endif %}
-                                {% endmacro %}
+                                        {% endif %}
+                                    {% endmacro %}
 
-                                {% macro parentDocuments(relatedDocuments, fsc, i18n) %}
-                                    {% if relatedDocuments | length > 2 %}
-                                        <div class="col-sm">
-                                            <div class="alert alert-warning text-center">
-                                                <i class="fas fa-backward fa-fw" aria-hidden="true"></i>
-                                                <a href="#" data-toggle="modal" data-target="#parentsModal">{{ i18n.trans('previous-documents') }}</a>
-                                            </div>
-                                        </div>
-                                        <div class="modal fade" id="parentsModal" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">
-                                                            <i class="fas fa-backward fa-fw" aria-hidden="true"></i>
-                                                            {{ i18n.trans('previous-documents') }}
-                                                        </h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-hover mb-0">
-                                                            <tbody>
-                                                                {% for doc in relatedDocuments %}
-                                                                    <tr>
-                                                                        <td>
-                                                                            <a href="{{ doc.url() }}">
-                                                                                {{ i18n.trans(doc.modelClassName()) }}
-                                                                                {{ doc.primaryDescription() }}
-                                                                            </a>
-                                                                        </td>
-                                                                        <td class="text-right">{{ fsc.toolBox().coins().format(doc.total) }}</td>
-                                                                        <td class="text-right">{{ doc.fecha }}</td>
-                                                                    </tr>
-                                                                {% endfor %}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% else %}
-                                        {% for relatedDoc in relatedDocuments %}
+                                    {% macro parentDocuments(relatedDocuments, fsc, i18n) %}
+                                        {% if relatedDocuments | length > 2 %}
                                             <div class="col-sm">
                                                 <div class="alert alert-warning text-center">
-                                                    <i class="fas fa-backward fa-fw" aria-hidden="true"></i> {{ i18n.trans(relatedDoc.modelClassName()) }}
-                                                    <a href="{{ relatedDoc.url() }}">{{ relatedDoc.primaryDescription() }}</a>
+                                                    <i class="fas fa-backward fa-fw" aria-hidden="true"></i>
+                                                    <a href="#" data-toggle="modal" data-target="#parentsModal">{{ i18n.trans('previous-documents') }}</a>
                                                 </div>
                                             </div>
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endmacro %}
+                                            <div class="modal fade" id="parentsModal" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">
+                                                                <i class="fas fa-backward fa-fw" aria-hidden="true"></i>
+                                                                {{ i18n.trans('previous-documents') }}
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover mb-0">
+                                                                <tbody>
+                                                                    {% for doc in relatedDocuments %}
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a href="{{ doc.url() }}">
+                                                                                    {{ i18n.trans(doc.modelClassName()) }}
+                                                                                    {{ doc.primaryDescription() }}
+                                                                                </a>
+                                                                            </td>
+                                                                            <td class="text-right">{{ fsc.toolBox().coins().format(doc.total) }}</td>
+                                                                            <td class="text-right">{{ doc.fecha }}</td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            {% for relatedDoc in relatedDocuments %}
+                                                <div class="col-sm">
+                                                    <div class="alert alert-warning text-center">
+                                                        <i class="fas fa-backward fa-fw" aria-hidden="true"></i> {{ i18n.trans(relatedDoc.modelClassName()) }}
+                                                        <a href="{{ relatedDoc.url() }}">{{ relatedDoc.primaryDescription() }}</a>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endmacro %}
 
-                                {% macro childrenDocuments(relatedDocuments, fsc, i18n) %}
-                                    {% if relatedDocuments | length > 2 %}
-                                        <div class="col-sm">
-                                            <div class="alert alert-success text-center">
-                                                <i class="fas fa-forward fa-fw" aria-hidden="true"></i>
-                                                <a href="#" data-toggle="modal" data-target="#childrenModal">{{ i18n.trans('documents-generated') }}</a>
-                                            </div>
-                                        </div>
-                                        <div class="modal fade" id="childrenModal" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">
-                                                            <i class="fas fa-forward fa-fw" aria-hidden="true"></i>
-                                                            {{ i18n.trans('documents-generated') }}
-                                                        </h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-hover mb-0">
-                                                            <tbody>
-                                                                {% for doc in relatedDocuments %}
-                                                                    <tr>
-                                                                        <td>
-                                                                            <a href="{{ doc.url() }}">
-                                                                                {{ i18n.trans(doc.modelClassName()) }}
-                                                                                {{ doc.primaryDescription() }}
-                                                                            </a>
-                                                                        </td>
-                                                                        <td class="text-right">{{ fsc.toolBox().coins().format(doc.total) }}</td>
-                                                                        <td class="text-right">{{ doc.fecha }}</td>
-                                                                    </tr>
-                                                                {% endfor %}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% else %}
-                                        {% for relatedDoc in relatedDocuments %}
+                                    {% macro childrenDocuments(relatedDocuments, fsc, i18n) %}
+                                        {% if relatedDocuments | length > 2 %}
                                             <div class="col-sm">
                                                 <div class="alert alert-success text-center">
-                                                    <i class="fas fa-forward fa-fw" aria-hidden="true"></i> {{ i18n.trans(relatedDoc.modelClassName()) }}
-                                                    <a href="{{ relatedDoc.url() }}">{{ relatedDoc.primaryDescription() }}</a>
+                                                    <i class="fas fa-forward fa-fw" aria-hidden="true"></i>
+                                                    <a href="#" data-toggle="modal" data-target="#childrenModal">{{ i18n.trans('documents-generated') }}</a>
                                                 </div>
                                             </div>
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endmacro %}
+                                            <div class="modal fade" id="childrenModal" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">
+                                                                <i class="fas fa-forward fa-fw" aria-hidden="true"></i>
+                                                                {{ i18n.trans('documents-generated') }}
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover mb-0">
+                                                                <tbody>
+                                                                    {% for doc in relatedDocuments %}
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a href="{{ doc.url() }}">
+                                                                                    {{ i18n.trans(doc.modelClassName()) }}
+                                                                                    {{ doc.primaryDescription() }}
+                                                                                </a>
+                                                                            </td>
+                                                                            <td class="text-right">{{ fsc.toolBox().coins().format(doc.total) }}</td>
+                                                                            <td class="text-right">{{ doc.fecha }}</td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            {% for relatedDoc in relatedDocuments %}
+                                                <div class="col-sm">
+                                                    <div class="alert alert-success text-center">
+                                                        <i class="fas fa-forward fa-fw" aria-hidden="true"></i> {{ i18n.trans(relatedDoc.modelClassName()) }}
+                                                        <a href="{{ relatedDoc.url() }}">{{ relatedDoc.primaryDescription() }}</a>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endmacro %}

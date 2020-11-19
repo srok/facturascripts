@@ -60,7 +60,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             {% for status in fsc.getAvaliableStatus() %}
                                 <button type="button" onclick="sendFormData('{{ status.primaryColumnValue() }}');" class="dropdown-item">
-                                    <i class="fas fa-file fa-fw" aria-hidden="true"></i> {{ i18n.trans(status.generadoc) }}
+                                    <i class="fas fa-file fa-fw" aria-hidden="true"></i> {{ i18n.trans(status.generadoc) }} {{ i18n.trans(status.generadoc2) }}
                                 </button>
                             {% endfor %}
                         </div>

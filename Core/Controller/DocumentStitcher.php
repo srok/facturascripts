@@ -69,7 +69,7 @@ class DocumentStitcher extends Controller
         $documentState = new EstadoDocumento();
         $where = [new DataBaseWhere('tipodoc', $this->modelName)];
         foreach ($documentState->all($where) as $docState) {
-            if (!empty($docState->generadoc)) {
+            if (!empty($docState->generadoc) || !empty($docState->generadoc2)) {
                 $status[] = $docState;
             }
         }
@@ -106,11 +106,12 @@ class DocumentStitcher extends Controller
         $modelClass = self::MODEL_NAMESPACE . $this->modelName;
         $model = new $modelClass();
         $where = [
-            new DataBaseWhere('editable', true),
+         //   new DataBaseWhere('editable', true),
             new DataBaseWhere('coddivisa', $this->documents[0]->coddivisa),
             new DataBaseWhere($model->subjectColumn(), $this->documents[0]->subjectColumnValue())
         ];
         $order = ['fecha' => 'DESC', 'hora' => 'DESC'];
+
         foreach ($model->all($where, $order) as $doc) {
             if (false === \in_array($doc->primaryColumnValue(), $this->getCodes())) {
                 $list[] = $doc;
@@ -199,22 +200,25 @@ class DocumentStitcher extends Controller
      */
     protected function endGenerationAndRedir(&$generator, $idestado)
     {
-        /// save new document status if no pending quantity
-        foreach ($this->documents as $doc) {
-            $update = true;
-            foreach ($doc->getLines() as $line) {
-                if ($line->servido < $line->cantidad) {
-                    $update = false;
-                    break;
-                }
-            }
+        // SE COMENTA ESTA FUNCIONALIDAD POR EL MOMENTO 
 
-            if ($update) {
-                $doc->setDocumentGeneration(false);
-                $doc->idestado = $idestado;
-                $doc->save();
-            }
-        }
+        /// save new document status if no pending quantity
+        
+        // foreach ($this->documents as $doc) {
+        //     $update = true;
+        //     foreach ($doc->getLines() as $line) {
+        //         if ($line->servido < $line->cantidad) {
+        //             $update = false;
+        //             break;
+        //         }
+        //     }
+        //     mprd(  $idestado );
+        //     if ($update) {
+        //         $doc->setDocumentGeneration(false);
+        //         $doc->idestado = $idestado;
+        //         $doc->save();
+        //     }
+        // }
 
         /// redir to new document
         foreach ($generator->getLastDocs() as $doc) {
@@ -305,7 +309,10 @@ class DocumentStitcher extends Controller
     {
         $estado = new EstadoDocumento();
         $estado->loadFromCode($idestado);
+        if( $estado->generadoc  )
         return $estado->generadoc;
+        if( $estado->generadoc2  )
+        return $estado->generadoc2;
     }
 
     /**
