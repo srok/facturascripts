@@ -18,7 +18,7 @@
     </column>  
     <constraint>
         <name>ca_puntosventa_presupuestoscli</name>
-        <type>FOREIGN KEY (codpv) REFERENCES puntosventa (codpv) ON DELETE RESTRICT ON UPDATE CASCADE</type>
+        <type>FOREIGN KEY (codpv,idempresa) REFERENCES puntosventa (codpv,idempresa) ON DELETE RESTRICT ON UPDATE CASCADE</type>
     </constraint>
    
 </table>

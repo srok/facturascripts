@@ -8,7 +8,7 @@ class ListPuntosVenta extends ListController
     public function getPageData()
     {
         $pageData = parent::getPageData();
-        $pageData['menu'] = 'AFIP';
+        $pageData['menu'] = 'accounting';
         $pageData['title'] = 'Puntos de venta';
         $pageData['icon'] = 'fas fa-file';
 

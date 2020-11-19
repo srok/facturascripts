@@ -6,6 +6,11 @@
         Estructura para puntos de venta
 -->
 <table>
+     <column>
+        <name>idpv</name>
+        <type>serial</type>
+        <null>NO</null>
+    </column>
     <column>
         <name>codpv</name>
         <type>integer</type>
@@ -20,8 +25,22 @@
         <type>integer</type>
         <null>NO</null>
     </column>
+     <column>
+        <name>idempresa</name>
+        <type>integer</type>
+        <null>NO</null>
+
+    </column>
     <constraint>
         <name>pv_pkey</name>
-        <type>PRIMARY KEY (codpv)</type>
+        <type>PRIMARY KEY (idpv)</type>
+    </constraint>
+     <constraint>
+        <name>ca_puntosventa_empresas</name>
+        <type>FOREIGN KEY (idempresa) REFERENCES empresas (idempresa) ON DELETE CASCADE ON UPDATE CASCADE</type>
+    </constraint>
+     <constraint>
+        <name>uniq_codigo_pventaempresa</name>
+        <type>UNIQUE (codpv,idempresa)</type>
     </constraint>
 </table>

@@ -13,8 +13,8 @@ class EditPuntosVenta extends EditController
     public function getPageData()
     {
         $pagedata = parent::getPageData();
-        $pagedata['menu'] = 'AFIP';
-        $pagedata['title'] = 'project';
+        $pagedata['menu'] = 'accounting';
+        $pagedata['title'] = 'puntos de venta';
         $pagedata['icon'] = 'fas fa-tasks';
 
         return $pagedata;

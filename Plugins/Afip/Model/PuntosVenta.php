@@ -14,7 +14,7 @@ class PuntosVenta extends Base\ModelClass
 
     public static function primaryColumn()
     {
-        return 'codpv';
+        return 'idpv';
     }
 
     public static function tableName()

@@ -282,6 +282,6 @@
     </constraint>
     <constraint>
         <name>uniq_codigo_notascreditoprov</name>
-        <type>UNIQUE (codigo,idempresa)</type>
+         <type>UNIQUE (codigo,idempresa,codproveedor)</type>
     </constraint>
 </table>
