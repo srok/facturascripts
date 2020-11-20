@@ -25,6 +25,7 @@
         <input type="hidden" name="model" value="{{ fsc.modelName }}"/>
         <input type="hidden" name="multireqtoken" value="{{ fsc.multiRequestProtection.newToken() }}"/>
         <input type="hidden" name="status"/>
+        <input type="hidden" name="documento"/>
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
@@ -59,8 +60,8 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             {% for status in fsc.getAvaliableStatus() %}
-                                <button type="button" onclick="sendFormData('{{ status.primaryColumnValue() }}');" class="dropdown-item">
-                                    <i class="fas fa-file fa-fw" aria-hidden="true"></i> {{ i18n.trans(status.generadoc) }} {{ i18n.trans(status.generadoc2) }}
+                                <button type="button" onclick="sendFormData('{{ status.primaryColumnValue() }}','{{ status.generadoc }}');" class="dropdown-item">
+                                    <i class="fas fa-file fa-fw" aria-hidden="true"></i> {{ i18n.trans(status.generadoc) }} 
                                 </button>
                             {% endfor %}
                         </div>
@@ -111,8 +112,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        function sendFormData(status) {
+        function sendFormData(status,documento) {
             document.formDocStitcher.status.value = status;
+            document.formDocStitcher.documento.value = documento;
             document.formDocStitcher.submit();
         }
         function selectAll() {

@@ -20,6 +20,7 @@ namespace FacturaScripts\Core\Lib\ExtendedController;
 
 use FacturaScripts\Core\Model\Base\BusinessDocumentLine;
 use FacturaScripts\Dinamic\Lib\BusinessDocumentFormTools;
+use FacturaScripts\Core\Base\DataBase;
 
 /**
  * Description of BusinessDocumentController
@@ -80,7 +81,7 @@ abstract class BusinessDocumentController extends PanelController
        /**
      * Load views and document.
      */
-    abstract protected function createViews();
+       abstract protected function createViews();
 
 
     /**
@@ -95,7 +96,7 @@ abstract class BusinessDocumentController extends PanelController
         $this->documentTools = new BusinessDocumentFormTools();
     }
 
- 
+
     /**
      * Run the actions that alter data before reading it.
      *
@@ -107,13 +108,19 @@ abstract class BusinessDocumentController extends PanelController
     {
         switch ($action) {
             case 'recalculate-document':
-                return $this->recalculateDocumentAction();
+            return $this->recalculateDocumentAction();
 
             case 'save-document':
-                return $this->saveDocumentAction();
+            return $this->saveDocumentAction();
 
             case 'subject-changed':
-                return $this->subjectChangedAction();
+            return $this->subjectChangedAction();
+
+            case 'puntos-venta':
+            $this->setTemplate(false);
+            $results = $this->getPuntosVenta();
+            $this->response->setContent(json_encode($results));
+            return false;
         }
 
         return parent::execPreviousAction($action);
@@ -130,25 +137,25 @@ abstract class BusinessDocumentController extends PanelController
             switch ($field) {
                 case 'codpago':
                 case 'codserie':
-                    $data['custom'][$field] = $value;
-                    break;
+                $data['custom'][$field] = $value;
+                break;
 
                 case 'dtopor1':
                 case 'dtopor2':
                 case 'idestado':
-                    $data['final'][$field] = $value;
-                    break;
+                $data['final'][$field] = $value;
+                break;
 
                 case 'lines':
-                    $data['lines'] = $this->views[$this->active]->processFormLines($value);
-                    break;
+                $data['lines'] = $this->views[$this->active]->processFormLines($value);
+                break;
 
                 case $this->views[$this->active]->model->subjectColumn():
-                    $data['subject'][$field] = $value;
-                    break;
+                $data['subject'][$field] = $value;
+                break;
 
                 default:
-                    $data['form'][$field] = $value;
+                $data['form'][$field] = $value;
             }
         }
 
@@ -168,25 +175,25 @@ abstract class BusinessDocumentController extends PanelController
 
         switch ($viewName) {
             case 'Edit' . $this->getModelClassName():
-                $view->loadData($code);
-                break;
+            $view->loadData($code);
+            break;
 
             case $this->getLineXMLView():
-                if (empty($code)) {
-                    $view->model->setAuthor($this->user);
-                    break;
-                }
+            if (empty($code)) {
+                $view->model->setAuthor($this->user);
+                break;
+            }
 
                 /// data not found?
-                $view->loadData($code);
-                $action = $this->request->request->get('action', '');
-                if ('' === $action && false === $view->model->exists()) {
-                    $this->toolBox()->i18nLog()->warning('record-not-found');
-                    break;
-                }
-
-                $this->title .= ' ' . $view->model->primaryDescription();
+            $view->loadData($code);
+            $action = $this->request->request->get('action', '');
+            if ('' === $action && false === $view->model->exists()) {
+                $this->toolBox()->i18nLog()->warning('record-not-found');
                 break;
+            }
+
+            $this->title .= ' ' . $view->model->primaryDescription();
+            break;
         }
     }
 
@@ -293,8 +300,8 @@ abstract class BusinessDocumentController extends PanelController
 
             $this->documentTools->recalculate($view->model);
             return $view->model->save() && $this->dataBase->commit() ?
-                'OK:' . $view->model->url() :
-                $this->saveDocumentError('ERROR');
+            'OK:' . $view->model->url() :
+            $this->saveDocumentError('ERROR');
         }
 
         return $this->saveDocumentError('ERROR');
@@ -388,4 +395,33 @@ abstract class BusinessDocumentController extends PanelController
         $oldLine->loadFromData($newLine, ['actualizastock']);
         return $oldLine->save();
     }
+
+    /**
+     * Devuelve los puntos de venta disponibles para una empresa, a partir de un almacén
+     * @return array
+     */
+    protected function getPuntosVenta(): array
+    {
+        $codalmacen = $this->request->request->get('codalmacen');   
+        $dataBase = new DataBase();
+        $sql = "SELECT puntosventa.descripcion as fieldtitle, 
+        puntosventa.codpv as fieldcode  
+        FROM `puntosventa` 
+        INNER JOIN almacenes on 
+        almacenes.idempresa = puntosventa.idempresa 
+        and almacenes.codalmacen = '$codalmacen' group by idpv";
+
+        $result = $dataBase->select($sql);
+
+        foreach ($result as $value) {
+          $results[] = ['fieldcode' => $value['fieldcode'], 'fieldtitle' => $value['fieldtitle']];
+      }
+
+
+      if (empty($results)) {
+        $results[] = [];
+    }
+
+    return $results;
+}
 }

@@ -66,14 +66,25 @@ class DocumentStitcher extends Controller
     public function getAvaliableStatus()
     {
         $status = [];
+
+     
+
         $documentState = new EstadoDocumento();
-        $where = [new DataBaseWhere('tipodoc', $this->modelName)];
+        $where = [new DataBaseWhere('tipodoc',  $this->modelName)];
         foreach ($documentState->all($where) as $docState) {
-            if (!empty($docState->generadoc) || !empty($docState->generadoc2)) {
+
+            if (!empty($docState->generadoc)) {
                 $status[] = $docState;
+
+            }
+             if ( !empty($docState->generadoc2)) {
+
+                $docState_tmp = clone $docState;
+                $docState_tmp->generadoc = $docState->generadoc2;
+
+                $status[] = $docState_tmp;
             }
         }
-
         return $status;
     }
 
@@ -143,6 +154,17 @@ class DocumentStitcher extends Controller
         }
 
         $status = $this->request->request->get('status', '');
+
+
+        $documento = $this->request->request->get('documento', '');
+        
+
+         if (!empty($documento)) {
+            $this->generateNewDocument($status, $documento);
+            return;
+        }
+   
+
         if (!empty($status)) {
             $this->generateNewDocument((int) $status);
         }
@@ -198,7 +220,7 @@ class DocumentStitcher extends Controller
      * @param BusinessDocumentGenerator $generator
      * @param int                       $idestado
      */
-    protected function endGenerationAndRedir(&$generator, $idestado)
+    protected function endGenerationAndRedir(&$generator)
     {
         // SE COMENTA ESTA FUNCIONALIDAD POR EL MOMENTO 
 
@@ -228,12 +250,15 @@ class DocumentStitcher extends Controller
         }
     }
 
+
+    
+
     /**
      * Generates a new document with this data.
      * 
      * @param int $idestado
      */
-    protected function generateNewDocument($idestado)
+    protected function generateNewDocument($idestado,$documentType = null)
     {
         /// group needed data
         $newLines = [];
@@ -272,7 +297,13 @@ class DocumentStitcher extends Controller
 
         /// generate new document
         $generator = new BusinessDocumentGenerator();
+
         $newClass = $this->getGenerateClass($idestado);
+
+        if( $documentType ){
+            $newClass = $documentType;
+        }
+
         if (false === $generator->generate($prototype, $newClass, $newLines, $quantities, $properties)) {
             $this->toolBox()->i18nLog()->error('record-save-error');
             return;

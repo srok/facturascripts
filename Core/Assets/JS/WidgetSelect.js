@@ -62,10 +62,10 @@
                 }
             });
         })
+        // if(!$select.find('option').length){
 
-        if(!$select.find('option').length){
             $filter.change();
-        }
+        // }
     })
 
 });
