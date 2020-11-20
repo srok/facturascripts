@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view>
+    <columns>
+        <group name="AFIP" numcolumns="12" icon="fas fa-key" title="AFIP">
+
+         <column name="afip-cert" numcolumns="6" order="110" description="">
+            <widget type="file" fieldname="afipcert"  required="true"  />
+        </column>
+        <column name="afip-key" numcolumns="6" order="110" description="">
+            <widget type="file" fieldname="afipkey"  required="true"  />
+        </column>
+
+    </group>
+</columns>
+</view>

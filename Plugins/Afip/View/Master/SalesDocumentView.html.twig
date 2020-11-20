@@ -50,6 +50,8 @@
 
         return false;
     }
+
+
 </script>
 <form id="form{{ thisView.getViewName() }}" action="#" method="post">
     <input type="hidden" name="action"/>
@@ -67,7 +69,12 @@
             {% endif %}
             {{ _self.customSelect('doc_codalmacen', 'codalmacen', thisView.model.codalmacen, thisView.getSelectValues('Almacen')) }}
             {{ _self.customSelect('doc_codserie', 'codserie', thisView.model.codserie, thisView.getSelectValues('Serie')) }}
-            {{ _self.customSelect('doc_puntoventa', 'codpv', thisView.model.puntoventa, thisView.getSelectValues('PuntosVenta')) }}
+            {# {{ _self.customSelect('doc_puntoventa', 'codpv', thisView.model.puntoventa, thisView.getSelectValues('PuntosVenta')) }} #}
+             <div class="col-sm-3 col-md-2 col-lg mb-2">
+                        <select class="form-control" name="codpv" id="doc_puntoventa" >
+
+                        </select>
+            </div>
             {{ _self.customInput('doc_fecha', 'fecha', thisView.model.fecha, 'text', 'fas fa-calendar-alt', {class: 'form-control datepicker'}) }}
             {% for field in fsc.getCustomFields() %}
                 {{ _self.customInput('doc_' ~ field.name, field.name, fsc.getViewModelValue(thisView.getViewName(), field.name),
@@ -294,7 +301,8 @@
 {% macro statusSelect(model, view, i18n) %}
     {% set status = model.getStatus() %}
     {% if model.exists() == false %}
-    {% elseif status.generadoc %}
+
+    {% elseif status.generadoc and status.generadoc2 == '' %}
         <div class="col mb-2">
             <button class="btn btn-block btn-secondary" type="button">
                 <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
@@ -309,23 +317,29 @@
                 <div class="dropdown-menu dropdown-menu-right">
                     {% set showDocumentStitcher = false %}
                     {% for status in view.documentStatus %}
+
+                        {% if (status.generadoc) %}
+                            {% set showDocumentStitcher = true %}
+                        {% endif %}
+
                         {% if model.idestado == status.idestado %}
                             <a class="dropdown-item active" href="#">
                                 <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
                             </a>
                         {% else %}
                             <a class="dropdown-item" href="#" onclick="$('#doc_idestado').val('{{ status.idestado }}'); businessDocViewSave();">
-                                {% if status.generadoc %}
-                                    {% set showDocumentStitcher = true %}
-                                {% endif %}
                                 <i class="{{ status.icon() }} fa-fw" aria-hidden="true"></i> {{ status.nombre }}
                             </a>
                         {% endif %}
                     {% endfor %}
+                     {% if model.getStatus().generadoc2 %}
+                              {% set showDocumentStitcher = true %}
+                    {% endif %}
                     {% if model.exists() and showDocumentStitcher %}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="DocumentStitcher?model={{ model.modelClassName() }}&codes={{ model.primaryColumnValue() }}">
-                            <i class="fas fa-magic fa-fw" aria-hidden="true"></i> {{ i18n.trans('group-or-split') }}
+                            <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+                             {{ i18n.trans(status.generadoc2) }}  
                         </a>
                     {% endif %}
                 </div>
@@ -439,3 +453,34 @@
         {% endfor %}
     {% endif %}
 {% endmacro %}
+<script>
+
+var $pv_sel = $('#doc_puntoventa');
+
+var $almacen = $("#doc_codalmacen").change(function(){
+
+    var id_alm = $(this).val();
+    var data = {'action':'puntos-venta','codalmacen':id_alm};
+    $.ajax({
+                method: "POST",
+                url: window.location.href,
+                data: data,
+                dataType: "json",
+                success: function (results) {
+                    $pv_sel.empty();
+               
+                    results.forEach(function (element) {
+                        $pv_sel.append($('<option>', {
+                            value: element['fieldcode'],
+                            text: element['fieldtitle']
+                        }));
+                    });
+                },
+                error: function (msg) {
+                    alert(msg.status + " " + msg.responseText);
+                }
+            });
+});
+
+$almacen.change();
+</script>

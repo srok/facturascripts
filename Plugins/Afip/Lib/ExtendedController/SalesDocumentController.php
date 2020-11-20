@@ -19,16 +19,7 @@
 namespace FacturaScripts\Plugins\Afip\Lib\ExtendedController;
 
 use FacturaScripts\Core\Lib\ExtendedController\SalesDocumentController as SalesDocumentControllerCore;
-// use FacturaScripts\Core\Lib\ExtendedController\BusinessDocumentView;
-// use FacturaScripts\Dinamic\Model\Cliente;
-// 
-/*use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
-use FacturaScripts\Core\Lib\ExtendedController\BaseView;
-use FacturaScripts\Dinamic\Lib\Accounting\InvoiceToAccounting;
-use FacturaScripts\Dinamic\Lib\BusinessDocumentGenerator;
-use FacturaScripts\Dinamic\Lib\ExtendedController\SalesDocumentController;
-use FacturaScripts\Dinamic\Lib\ReceiptGenerator;
-use FacturaScripts\Dinamic\Model\FacturaCliente;*/
+
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Dinamic\Lib\BusinessDocumentCode;
 use FacturaScripts\Dinamic\Model\EstadoDocumento;

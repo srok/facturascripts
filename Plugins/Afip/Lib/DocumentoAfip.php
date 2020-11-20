@@ -4,6 +4,7 @@ namespace FacturaScripts\Plugins\Afip\Lib;
 
 
 use FacturaScripts\Dinamic\Model\Cliente;
+use FacturaScripts\Dinamic\Model\Empresa;
 use FacturaScripts\Dinamic\Model\FacturaCliente;
 use FacturaScripts\Core\Base\ToolBox;
 
@@ -20,6 +21,8 @@ class DocumentoAfip
 	private $system_document = '';
 	
 	private $system_client = '';
+
+    private $empresa;
 
 	private $tipo_doc_fiscal;
 
@@ -91,12 +94,19 @@ class DocumentoAfip
 	}
 
 
-	public function create(&$document, Cliente $cliente,$data){
+	public function create(&$document, Cliente $cliente, $data){
 
 			$this->system_document = &$document;
 			$this->system_client = &$cliente;
 
-			$this->afip = new Afip(array('CUIT'=>23312509679));
+            $empresa = new Empresa();
+            $empresa->loadFromCode( $document->idempresa );
+
+			$this->afip = new Afip([
+                'CUIT' => $empresa->cifnif,
+                'res_folder' => __DIR__. '/../Files/Res/'. $empresa->idempresa .'/',
+                'ta_folder' => __DIR__. '/../Files/Ta/'. $empresa->idempresa .'/'
+            ]);
 
 			$this->loadFromData($data);
 
@@ -106,9 +116,9 @@ class DocumentoAfip
 			 **/
 			$res = $this->afip->ElectronicBilling->CreateVoucher($afipData);
 
-			$this->system_document->cae=$res['CAE'];
-			$this->system_document->caefechavto=$res['CAEFchVto'];
-			$this->system_document->numero2=$this->nro_factura;
+			$this->system_document->cae = $res['CAE'];
+			$this->system_document->caefechavto = $res['CAEFchVto'];
+			$this->system_document->numero2 = $this->nro_factura;
 
 		
 	}

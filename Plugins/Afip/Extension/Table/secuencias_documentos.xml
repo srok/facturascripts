@@ -11,6 +11,6 @@
     </column>
      <constraint>
         <name>ca_secuencias_documentos_puntosventa</name>
-        <type>FOREIGN KEY (puntoventa) REFERENCES puntosventa (codpv) ON DELETE CASCADE ON UPDATE CASCADE</type>
+        <type>FOREIGN KEY (puntoventa,idempresa) REFERENCES puntosventa (codpv,idempresa) ON DELETE NO ACTION ON UPDATE NO ACTION</type>
     </constraint>
 </table>

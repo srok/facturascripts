@@ -8,6 +8,7 @@ class Init extends InitClass
     public function init()
     {
         $this->loadExtension(new Extension\Model\Cliente());
+        //$this->loadExtension(new Extension\Controller\EditEmpresa());
     }
     public function update()
     {
