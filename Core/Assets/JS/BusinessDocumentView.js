@@ -31,7 +31,12 @@
                 if (typeof changes[0][3] === "string") {
                     changes[0][3] = changes[0][3].split(" | ", 1)[0];
                     var position = hsTable.getSelected();
-                    hsTable.setDataAtCell(position[0][0], 2, '');
+                    try{
+                        hsTable.setDataAtCell(position[0][0], 2, '');
+
+                    }catch(e){
+                        console.error(e);
+                    }
                 }
             }
         }

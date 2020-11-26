@@ -262,7 +262,7 @@ class DocumentStitcher extends Controller
     {
         /// group needed data
         $newLines = [];
-        $properties = ['fecha' => $this->request->request->get('fecha', '')];
+        $properties = ['fecha' => $this->request->request->get('fecha', ''),'numero2'=>null];
         $prototype = null;
         $quantities = [];
         foreach ($this->documents as $doc) {
@@ -287,6 +287,7 @@ class DocumentStitcher extends Controller
             }
         }
         if (null === $prototype || empty($newLines)) {
+             $this->toolBox()->i18nLog()->error('no-quantity-selected');
             return;
         }
 
