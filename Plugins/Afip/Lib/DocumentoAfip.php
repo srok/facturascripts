@@ -59,6 +59,7 @@ class DocumentoAfip
 	private $moneda = 'PES';
 
 	private $moneda_cotizacion = 1;
+    private $cbtesAsoc = array(  );
 
 	private $iva;//array con alicuotas discrimindas.
 
@@ -181,6 +182,23 @@ class DocumentoAfip
 			$this->importe_iva = $this->system_document->totaliva;
 
 			$this->iva=$this->alicuotas($data['lines']);
+            
+            //Si es nota de crédito se buscan las facturas que estén asociadas con este documento.
+            if(  $this->system_document->codsubtipodoc == 'NC' ){
+                $parent_documents =  $this->system_document->parentDocuments(  );//son facturas porque este mètodo es el de invoiceTrait no el de transformer.
+                //tipo $parent_document[i]->codserie;
+                //PtoVta  $parent_document[i]->codpv;
+                //Nro  $parent_document[i]->numero2;
+
+                    foreach ( $parent_documents as $k => $v ){
+                        $this->cbtesAsoc[] = array(
+                            'Tipo'      => $this->docFiscalCodes[$v->codsubtipodoc][$v->codserie],
+                            'PtoVta'    => $v->codpv,
+                            'Nro'       => $v->numero2
+                        );
+                    }
+            }
+            
 	}
 
 	private function prepareData(){
@@ -209,13 +227,7 @@ class DocumentoAfip
 		);
 
 		if($this->system_document->codsubtipodoc == 'NC'){
-			$data['CbtesAsoc'] = array(
-					array(
-						'Tipo' 		=> '',
-						'PtoVta' 	=> '',
-						'Nro' 		=> ''
-					)
-			);
+			$data['CbtesAsoc'] = $this->cbtesAsoc;
 		}
 
 		return $data;

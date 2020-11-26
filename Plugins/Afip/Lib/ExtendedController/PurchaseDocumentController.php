@@ -40,46 +40,45 @@ abstract class PurchaseDocumentController extends PurchaseDocumentControllerCore
      */
      protected function saveDocumentAction()
      {
-        $this->setTemplate(false);
-        if (!$this->permissions->allowUpdate) {
-            $this->response->setContent($this->toolBox()->i18n()->trans('not-allowed-modify'));
-            return false;
-        }
+      $this->setTemplate(false);
+      if (!$this->permissions->allowUpdate) {
+        $this->response->setContent($this->toolBox()->i18n()->trans('not-allowed-modify'));
+        return false;
+      }
 
         // duplicated request?
-        if ($this->multiRequestProtection->tokenExist($this->request->request->get('multireqtoken', ''))) {
-            $this->response->setContent($this->toolBox()->i18n()->trans('duplicated-request'));
-            return false;
-        }
+      if ($this->multiRequestProtection->tokenExist($this->request->request->get('multireqtoken', ''))) {
+        $this->response->setContent($this->toolBox()->i18n()->trans('duplicated-request'));
+        return false;
+      }
 
         /// loads model
-        $data = $this->getBusinessFormData();
-        $this->views[$this->active]->model->setAuthor($this->user);
-        $this->views[$this->active]->loadFromData($data['form']);
-        $this->views[$this->active]->lines = $this->views[$this->active]->model->getLines();
+      $data = $this->getBusinessFormData();
+      $this->views[$this->active]->model->setAuthor($this->user);
+      $this->views[$this->active]->loadFromData($data['form']);
+      $this->views[$this->active]->lines = $this->views[$this->active]->model->getLines();
 
-         //no lines?
+      $validLines = $this->documentTools->validateLines( $data['lines'] );
 
-
-        if( count( $data['lines'] ) < 1){
-            $this->response->setContent($this->toolBox()->i18n()->trans('no-lines'));
-            return false;
-        }
+      if( $validLines['status'] == false){
+        $this->response->setContent($validLines['error']);
+        return false;
+      }
 
 
         //load extrainfo for code change if altpattern is enabled
 
         //$data = $this->getBusinessFormData();
 
-        $newEstado = $this->request->request->get('idestado'); 
+      $newEstado = $this->request->request->get('idestado'); 
 
-        $estadoDocumento = new EstadoDocumento();
+      $estadoDocumento = new EstadoDocumento();
 
-        $estadoDocumento->loadFromCode($newEstado);
+      $estadoDocumento->loadFromCode($newEstado);
 
-        if($estadoDocumento->altpattern){
+      if($estadoDocumento->altpattern){
 
-          BusinessDocumentCode::getNewCode($this->views[$this->active]->model,false,true);
+        BusinessDocumentCode::getNewCode($this->views[$this->active]->model,false,true);
 
       }
 
@@ -90,5 +89,5 @@ abstract class PurchaseDocumentController extends PurchaseDocumentControllerCore
         // Event finish
       $this->views[$this->active]->model->pipe('finish');
       return false;
+    }
   }
-}

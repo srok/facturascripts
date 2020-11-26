@@ -59,10 +59,13 @@ abstract class SalesDocumentController extends SalesDocumentControllerCore
     $this->views[$this->active]->loadFromData($data['form']);
     $this->views[$this->active]->lines = $this->views[$this->active]->model->getLines();
 
-    if( count( $data['lines'] ) < 1){
-      $this->response->setContent($this->toolBox()->i18n()->trans('no-lines'));
+    $validLines = $this->documentTools->validateLines( $data['lines'] );
+
+    if( $validLines['status'] == false){
+      $this->response->setContent($validLines['error']);
       return false;
     }
+
 
 //load extrainfo for code change if altpattern is enabled
 
